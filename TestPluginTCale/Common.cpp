@@ -10,7 +10,7 @@
 
 using namespace std;
 
-vector<string> mySplit(const string& str, string sp_string)  // split(), str 是要分割的string
+__declspec(dllexport) vector<string> mySplit(const string& str, string sp_string)  // split(), str 是要分割的string
 { 
     vector<string> vecString; 
     int sp_stringLen = sp_string.size(); 
