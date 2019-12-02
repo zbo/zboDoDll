@@ -25,17 +25,7 @@ void TestPlugin1(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc)
 {
 	ofstream outfile("out.txt",ios::app);	
-	std::vector<KXian*> KXianVector;
-	//构造K线序列
-	for(int i=0; i<DataLen; i++){
-		KXian* KX = new KXian;
-		KX->High = pfINa[i];
-		KX->Low = pfINb[i];
-		KX->i = i;
-		KX->BHan=false;
-		KXianVector.push_back(KX);
-		
-	}
+	std::vector<KXian*> KXianVector = GenerateKXianVector(DataLen,pfOUT,pfINa,pfINb,pfINc);
 	//找到K线最高点和最低点
 	KXian* KX_Max = KXianVector[0];
 	KXian* KX_Min = KXianVector[0];

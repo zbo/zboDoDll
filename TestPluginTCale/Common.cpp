@@ -78,3 +78,17 @@ void PrintFxVector(vector<FXing *> FXVector_Clean)
 		outfile<<"Index: "<<FXVector_Clean[i]->Second->i<<" left: "<< FXVector_Clean[i]->First->i<<" right: "<<FXVector_Clean[i]->Third->i<<'\n';
 	}
 }
+
+__declspec(dllexport) vector<KXian*> GenerateKXianVector(int DataLen, float* pfOUT, float* pfINa, float* pfINb, float* pfINc) {
+	vector<KXian*> KXianVector;
+	//构造K线序列
+	for (int i = 0; i < DataLen; i++) {
+		KXian* KX = new KXian;
+		KX->High = pfINa[i];
+		KX->Low = pfINb[i];
+		KX->i = i;
+		KX->BHan = false;
+		KXianVector.push_back(KX);
+	}
+	return KXianVector;
+}
