@@ -48,6 +48,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="deploy.cmd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
