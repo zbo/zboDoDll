@@ -38,4 +38,7 @@ TEST(E2E, DAY420) {
 	float* pfINa = new float[DataLength];
 	float* pfINb = new float[DataLength];
 	float* pfINc = new float[DataLength];
+	memcpy(pfINa, &pfINa_high[0], pfINa_high.size() * sizeof(float));
+	memcpy(pfINb, &pfINb_low[0], pfINb_low.size() * sizeof(float));
+	TestPlugin2(DataLength, out, pfINa, pfINb, pfINc);
 }

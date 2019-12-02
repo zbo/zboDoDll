@@ -16,3 +16,5 @@ extern "C"
 #endif //__cplusplus
 
 #endif //__TCALC_FUNC_SETS
+
+__declspec(dllexport) void TestPlugin2(int DataLen, float* pfOUT, float* pfINa, float* pfINb, float* pfINc);

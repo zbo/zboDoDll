@@ -91,7 +91,7 @@
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>C:\zd_pazq_hy\T0002\dlls\zbo.dll</OutputFile>
+      <OutputFile>.\Debug\zbo.dll</OutputFile>
       <ImportLibrary>.\Debug\TestPluginTCale.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
