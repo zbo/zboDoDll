@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp" />
@@ -55,6 +56,9 @@
     <ProjectReference Include="..\TestPluginTCale\TestPluginTCale.vcxproj">
       <Project>{38ccc20d-a292-4049-934d-87eb6ac83dad}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="zbogtest.rc" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

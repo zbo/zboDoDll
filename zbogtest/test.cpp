@@ -19,7 +19,7 @@ TEST(Sample, HelloWorld) {
 
 TEST(E2E, DAY420) {
 	fstream file;
-	file.open("C:\\zd_pazq_hy\\debug2.txt", ios::in);
+	file.open("..\\testdata\\debug2.txt", ios::in);
 	vector<float> pfINa_high;
 	vector<float> pfINb_low;
 	char buf[1024];
