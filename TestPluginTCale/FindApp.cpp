@@ -293,7 +293,7 @@ __declspec(dllexport) vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXian
 		if(baoHanRela.isBaoHan){
 			KXian* KX = new KXian;
 			KX->i=i;
-			if(baoHanRela.BaoHanType==-1){
+			if(baoHanRela.BHType==BaoHanRela::QianDa){
 				KX->High=KXianVector_Clean[temp_lenght-1]->High;
 				KX->Low=KXianVector[i]->Low;}
 			else{
@@ -318,14 +318,14 @@ __declspec(dllexport) vector<FXing *> Find_Di_FX_BH(std::vector<KXian *> KXianVe
 {
 	vector<KXian*> KXianVector_Clean;
 	vector<FXing*> FXingVector;
-	KXianVector_Clean.push_back(DeepCopy(KXianVector[0]));
+	KXianVector_Clean.push_back(KXianVector[0]);
 	for(int i=1; i<KXianVector.size()-1;i++){
 		int temp_lenght=KXianVector_Clean.size();
 		BaoHanRela baoHanRela = BaoHan(KXianVector_Clean[temp_lenght-1],KXianVector[i]);
 		if(baoHanRela.isBaoHan){
 			KXian* KX = new KXian;
 			KX->i=i;
-			if(baoHanRela.BaoHanType==-1){
+			if(baoHanRela.BHType==BaoHanRela::QianDa){
 				KX->High=KXianVector[i]->High;
 				KX->Low=KXianVector_Clean[i-temp_lenght]->Low;}
 			else{

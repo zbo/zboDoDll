@@ -33,16 +33,16 @@ BaoHanRela BaoHan(KXian* firstK, KXian* secondK){
 	BaoHanRela rela;
 	if(firstK->High>=secondK->High&&firstK->Low<=secondK->Low){
 		rela.isBaoHan=true;
-		rela.BaoHanType = -1;
+		rela.BHType = BaoHanRela::QianDa;
 		return rela;
 	}else if(firstK->High<=secondK->High&&firstK->Low>=secondK->Low){
 		rela.isBaoHan=true;
-		rela.BaoHanType = 1;
+		rela.BHType = BaoHanRela::HouDa;
 		return rela;
 	}
 	else{
 		rela.isBaoHan=false;
-		rela.BaoHanType = 0;
+		rela.BHType = BaoHanRela::No;
 		return rela;}
 }
 

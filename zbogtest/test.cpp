@@ -79,10 +79,10 @@ TEST(ALL_UNIT, Test_Can_Find_First_From_Simple2) {
 	EXPECT_EQ(firstFX->Second->i, 2);
 	EXPECT_EQ(firstFX->Third->i, 5);
 }
-TEST(E2E, DAY420_Can_Find_FirstFX_From_FXVector) {
-	TestDataBag* bag = LoadData("..\\testdata\\debug2.txt");
+TEST(E2E, 002957_Can_Find_FirstFX_From_FXVector) {
+	TestDataBag* bag = LoadData("..\\testdata\\002957.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
-	EXPECT_EQ(KXianVector.size(), 420);
+	EXPECT_EQ(KXianVector.size(), 87);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	int first_index = Find_First_FX_Index_FromALL(FXVector);
 	FXSearchResult next_result = Finx_Next_FX_Index_FromAll(first_index, FXVector);

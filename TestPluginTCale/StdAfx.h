@@ -42,8 +42,9 @@ struct FXSearchResult {
 };
 
 struct BaoHanRela{
+	enum BaoHanType {QianDa,HouDa,No};
 	bool isBaoHan;
-	int BaoHanType; //first BH second 1, -1, 0
+	BaoHanType BHType; //first BH second 1, -1, 0
 };
 
 // TODO: 在此处引用程序需要的其他头文件
