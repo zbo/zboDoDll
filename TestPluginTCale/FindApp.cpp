@@ -327,9 +327,9 @@ __declspec(dllexport) vector<FXing *> Find_Di_FX_BH(std::vector<KXian *> KXianVe
 			KX->i=i;
 			if(baoHanRela.BHType==BaoHanRela::QianDa){
 				KX->High=KXianVector[i]->High;
-				KX->Low=KXianVector_Clean[i-temp_lenght]->Low;}
+				KX->Low=KXianVector_Clean[temp_lenght-1]->Low;}
 			else{
-				KX->High=KXianVector_Clean[i-temp_lenght]->High;
+				KX->High=KXianVector_Clean[temp_lenght-1]->High;
 				KX->Low=KXianVector[i]->Low;
 			}
 			KX->BHan=true;

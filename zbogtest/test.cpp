@@ -86,6 +86,9 @@ TEST(E2E, 002957_Can_Find_FirstFX_From_FXVector) {
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	int first_index = Find_First_FX_Index_FromALL(FXVector);
 	FXSearchResult next_result = Finx_Next_FX_Index_FromAll(first_index, FXVector);
+	EXPECT_EQ(FXVector.size(), 33);
+	EXPECT_FLOAT_EQ(FXVector[first_index]->Second->High, 45.25);
+	EXPECT_FLOAT_EQ(next_result.SecondFX->Second->Low,32.56);
 }
 TEST(ALL_UNIT, Test_Can_Find_BH_From_SimpleDing) {
 	TestDataBag* bag = LoadData("..\\testdata\\simple1.txt");
