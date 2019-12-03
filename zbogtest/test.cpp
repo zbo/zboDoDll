@@ -50,14 +50,26 @@ TestDataBag* LoadData(std::string file_path) {
 	return bag;
 }
 
-TEST(E2E, DAY420_CanGenerateFinalFXVector) {
+TEST(ALL_UNIT, Test_Can_Find_First_From_Simple2) {
+	TestDataBag* bag = LoadData("..\\testdata\\simple2.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	EXPECT_EQ(KXianVector.size(), 14);
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	FXing* firstFX = Find_First_FX_FromALL(FXVector);
+	EXPECT_FLOAT_EQ(firstFX->Second->High, 5.3);
+	EXPECT_FLOAT_EQ(firstFX->FxType, FXing::Ding);
+	EXPECT_EQ(firstFX->First->i, 1);
+	EXPECT_EQ(firstFX->Second->i, 2);
+	EXPECT_EQ(firstFX->Third->i, 5);
+}
+TEST(E2E, DAY420_Can_Find_FirstFX_From_FXVector) {
 	TestDataBag* bag = LoadData("..\\testdata\\debug2.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 420);
-	vector<FXing*> FXVector = Find_Ding_FX_BH(KXianVector);
-
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	FXing* firstFX = Find_First_FX_FromALL(FXVector);
 }
-TEST(ALL_UNIT, Test_CanFindBHFromSimpleDing) {
+TEST(ALL_UNIT, Test_Can_Find_BH_From_SimpleDing) {
 	TestDataBag* bag = LoadData("..\\testdata\\simple1.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 8);

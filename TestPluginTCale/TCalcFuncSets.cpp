@@ -23,12 +23,9 @@ void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	vector<KXian*> KXianVector = GenerateKXianVector(DataLen,pfOUT,pfINa,pfINb,pfINc);
 	//归类法找出所有可能的分型
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	vector<FXing*> FXVector_Clean = Clean_All_FX(FXVector);
-	vector<FXing*> FXVector_Adjust = Adjust_All_FX(FXVector_Clean, KXianVector);
-	
-	PrintFxVector(FXVector_Clean);
+	PrintFxVector(FXVector);
 	FillinPOutDefault(pfOUT,DataLen);
-	FillinPOut(pfOUT,FXVector_Clean);
+	FillinPOut(pfOUT,FXVector);
 	outfile<<"------------------------------------------------"<<'\n';
 	outfile.close();
 	OutputDebugInfo(KXianVector);
