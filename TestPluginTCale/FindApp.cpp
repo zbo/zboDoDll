@@ -90,8 +90,82 @@ vector<FXing *> Adjust_All_FX(vector<FXing *> FXVector_Clean, vector<KXian *> al
 	}
 	return Adjust_FXing_Vector;
 }
+__declspec(dllexport) vector<FXing*> Find_Final_FXVector(vector<FXing*> FXVector)
+{
+	vector<FXing*> retBI;
+	return retBI;
+}
 
-__declspec(dllexport) FXing* Find_First_FX_FromALL(vector<FXing*> FXVector)
+int FindNextFromSolid(int firstFX_Index, vector<FXing*>& FXVector)
+{
+	int secondFX_Index = firstFX_Index;
+	FXing* solidFirst = FXVector[firstFX_Index];
+	for (int i = firstFX_Index; i < FXVector.size(); i++) {
+		if (solidFirst->Third->i + 1 >= FXVector[i]->First->i)
+			continue;
+		else if (FXVector[i]->FxType == solidFirst->FxType)
+			continue;
+		else if (solidFirst->FxType == FXing::Ding &&
+			solidFirst->Second->Low < FXVector[i]->Second->High)
+			continue;
+		else if (solidFirst->FxType == FXing::Di &&
+			solidFirst->Second->High > FXVector[i]->Second->Low)
+			continue;
+		else {
+			secondFX_Index = i;
+			break;
+		}
+	}
+	return secondFX_Index;
+}
+
+FXSearchResult FindNextFromFloat(int secondFX_Index, vector<FXing*> FXVector)
+{
+	int confirmed_Second_FX_Index = secondFX_Index;
+	int float_Third_FX_Index = secondFX_Index;
+	FXing* confirmed_Second_FX = FXVector[confirmed_Second_FX_Index];
+	for (int i = secondFX_Index; i < FXVector.size(); i++) {
+		if (FXVector[i]->FxType == confirmed_Second_FX->FxType)
+		{
+			if (confirmed_Second_FX->FxType == FXing::Ding &&
+				confirmed_Second_FX->Second->High < FXVector[i]->Second->High) {
+				confirmed_Second_FX_Index = i;
+				confirmed_Second_FX = FXVector[i];	
+			}
+			else if (confirmed_Second_FX->FxType == FXing::Di &&
+				confirmed_Second_FX->Second->Low > FXVector[i]->Second->Low) {
+				confirmed_Second_FX_Index = i;
+				confirmed_Second_FX = FXVector[i];
+			}
+		}
+		else if (confirmed_Second_FX->FxType == FXing::Ding &&
+			confirmed_Second_FX->Second->Low < FXVector[i]->Second->High)
+			continue;
+		else if (confirmed_Second_FX->FxType == FXing::Di &&
+			confirmed_Second_FX->Second->High > FXVector[i]->Second->Low)
+			continue;
+		else {
+			float_Third_FX_Index = i;
+			break;
+		}
+	}
+	FXSearchResult result;
+	result.SecondFX = confirmed_Second_FX;
+	result.ThirdFX = FXVector[float_Third_FX_Index];
+	result.SecondFX_Confirmed = confirmed_Second_FX_Index == float_Third_FX_Index ? false : true;
+	result.SecondFX_Index = confirmed_Second_FX_Index;
+	result.ThirdFX_Index = float_Third_FX_Index;
+	return result;
+}
+
+__declspec(dllexport) FXSearchResult Finx_Next_FX_Index_FromAll(int firstFX_Index, vector<FXing*> FXVector)
+{
+	int secondFX_Index = FindNextFromSolid(firstFX_Index, FXVector);
+	FXSearchResult result=FindNextFromFloat(secondFX_Index, FXVector);
+	return result;
+}
+
+__declspec(dllexport) int Find_First_FX_Index_FromALL(vector<FXing*> FXVector)
 {
 	FXing* tempFirstDing = nullptr;
 	FXing* tempFirstDi = nullptr;
@@ -99,6 +173,7 @@ __declspec(dllexport) FXing* Find_First_FX_FromALL(vector<FXing*> FXVector)
 	int tempFirstDiIndex = 0;
 	bool firstDingValid = false;
 	bool firstDiValid = false;
+	
 	for (int i = 0; i < FXVector.size(); i++) {
 		if (FXVector[i]->FxType == FXing::Ding)
 		{
@@ -120,6 +195,7 @@ __declspec(dllexport) FXing* Find_First_FX_FromALL(vector<FXing*> FXVector)
 			/*顶分型后接顶分型，保留高顶那个顶分型*/
 			if (FXVector[i]->FxType == tempFirstDing->FxType) {
 				tempFirstDing=tempFirstDing->Second->High < FXVector[i]->Second->High ? FXVector[i]:tempFirstDing;
+				tempFirstDingIndex = tempFirstDing->Second->High < FXVector[i]->Second->High ? i : tempFirstDingIndex;
 			}/*顶分型后接底分型*/
 			else {/*中间有独立K线*/
 				if (tempFirstDing->Third->i + 1 < FXVector[i]->First->i)
@@ -135,6 +211,7 @@ __declspec(dllexport) FXing* Find_First_FX_FromALL(vector<FXing*> FXVector)
 			/*底分型后接底分型，保留高顶那个顶分型*/
 			if (FXVector[i]->FxType == tempFirstDi->FxType) {
 				tempFirstDi = tempFirstDi->Second->Low > FXVector[i]->Second->Low ? FXVector[i] : tempFirstDi;
+				tempFirstDiIndex = tempFirstDi->Second->Low > FXVector[i]->Second->Low ? i : tempFirstDiIndex;
 			}/*底分型后接顶分型*/
 			else {
 				if (tempFirstDi->Third->i + 1 < FXVector[i]->First->i)
@@ -146,14 +223,13 @@ __declspec(dllexport) FXing* Find_First_FX_FromALL(vector<FXing*> FXVector)
 		}
 	}
 	if (firstDingValid && firstDiValid) {
-		return tempFirstDing->Second->i < tempFirstDi->Second->i ? tempFirstDing : tempFirstDi;
+		return tempFirstDing->Second->i < tempFirstDi->Second->i ? tempFirstDingIndex : tempFirstDiIndex;
 	}else if (!firstDingValid && !firstDiValid) {
-		return FXVector[0];
+		return 0;
 	}else if (firstDingValid && !firstDiValid) {
-		return tempFirstDing;
-	}
-	else {
-		return tempFirstDi;
+		return tempFirstDingIndex;
+	}else {
+		return tempFirstDiIndex;
 	}
 }
 

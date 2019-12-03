@@ -55,7 +55,8 @@ TEST(ALL_UNIT, Test_Can_Find_First_From_Simple3) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 15);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	FXing* firstFX = Find_First_FX_FromALL(FXVector);
+	int index= Find_First_FX_Index_FromALL(FXVector);
+	FXing* firstFX = FXVector[index];
 	EXPECT_FLOAT_EQ(firstFX->Second->Low, 1.0);
 	EXPECT_FLOAT_EQ(firstFX->FxType, FXing::Di);
 	EXPECT_EQ(firstFX->First->i, 6);
@@ -67,7 +68,7 @@ TEST(ALL_UNIT, Test_Can_Find_First_From_Simple2) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 14);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	FXing* firstFX = Find_First_FX_FromALL(FXVector);
+	FXing* firstFX = FXVector[Find_First_FX_Index_FromALL(FXVector)];
 	EXPECT_FLOAT_EQ(firstFX->Second->High, 5.3);
 	EXPECT_FLOAT_EQ(firstFX->FxType, FXing::Ding);
 	EXPECT_EQ(firstFX->First->i, 1);
@@ -79,7 +80,8 @@ TEST(E2E, DAY420_Can_Find_FirstFX_From_FXVector) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 420);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	FXing* firstFX = Find_First_FX_FromALL(FXVector);
+	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult next_result = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 }
 TEST(ALL_UNIT, Test_Can_Find_BH_From_SimpleDing) {
 	TestDataBag* bag = LoadData("..\\testdata\\simple1.txt");

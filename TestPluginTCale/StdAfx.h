@@ -26,6 +26,19 @@ public:
 	DINGDI FxType;
 };
 
+class BI {
+public:
+	FXing* FirstFX;
+	FXing* SecondFX;
+};
+
+struct FXSearchResult {
+	FXing* SecondFX;
+	FXing* ThirdFX;
+	int SecondFX_Index;
+	int ThirdFX_Index;
+	bool SecondFX_Confirmed;
+};
 
 struct BaoHanRela{
 	bool isBaoHan;
