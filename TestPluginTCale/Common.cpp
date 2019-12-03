@@ -46,11 +46,11 @@ BaoHanRela BaoHan(KXian* firstK, KXian* secondK){
 		return rela;}
 }
 
-void OutputDebugInfo(std::vector<KXian *> &KXianVector)
+void OutputDebugInfo(std::vector<KXian *> KXianVector)
 {
 	ofstream debug_file("debug.txt",ios::trunc);
 	for(int i=0; i<KXianVector.size(); i++){
-		debug_file<<KXianVector[i]->High<<" "<<KXianVector[i]->Low<<'\n';
+		debug_file<<KXianVector[i]->High<<" "<<KXianVector[i]->Low<<" "<<KXianVector[i]->Period<<'\n';
 	}
 	debug_file.close();
 }
@@ -86,6 +86,7 @@ __declspec(dllexport) vector<KXian*> GenerateKXianVector(int DataLen, float* pfO
 		KXian* KX = new KXian;
 		KX->High = pfINa[i];
 		KX->Low = pfINb[i];
+		KX->Period = pfINc[i];
 		KX->i = i;
 		KX->BHan = false;
 		KXianVector.push_back(KX);

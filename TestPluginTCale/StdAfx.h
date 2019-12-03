@@ -14,6 +14,7 @@ public:
 	float Low;
 	int i;
 	bool BHan;
+	int Period;
 };
 
 class FXing{
@@ -45,14 +46,7 @@ struct BaoHanRela{
 	int BaoHanType; //first BH second 1, -1, 0
 };
 
-
-
-
-
 // TODO: 在此处引用程序需要的其他头文件
-
-
-
 // stdafx.h : include file for standard system include files,
 //  or project specific include files that are used frequently, but
 //      are changed infrequently
