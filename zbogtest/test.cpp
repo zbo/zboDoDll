@@ -50,10 +50,16 @@ TestDataBag* LoadData(std::string file_path) {
 	return bag;
 }
 
-TEST(UNIT, SIMPLEBH1) {
+
+TEST(UNIT, Test_FindMaxMinFromKXianVector) {
 	TestDataBag* bag = LoadData("..\\testdata\\simple1.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(),8);
+	vector<KXian*> KXianMaxMinVector = FindMaxMinFromKXianVector(KXianVector);
+	EXPECT_EQ(KXianMaxMinVector.size(), 2);
+	EXPECT_FLOAT_EQ(KXianMaxMinVector[0]->High, 5.3);
+	EXPECT_FLOAT_EQ(KXianMaxMinVector[1]->Low, 1);
+
 }
 
 TEST(Sample, HelloWorld) {

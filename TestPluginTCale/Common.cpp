@@ -92,3 +92,22 @@ __declspec(dllexport) vector<KXian*> GenerateKXianVector(int DataLen, float* pfO
 	}
 	return KXianVector;
 }
+
+__declspec(dllexport) vector<KXian*> FindMaxMinFromKXianVector(vector<KXian*> KXianVector)
+{
+	KXian* KX_Max = KXianVector[0];
+	KXian* KX_Min = KXianVector[0];
+	for (int i = 0; i < KXianVector.size(); i++) {
+		KXian* KX = KXianVector[i];
+		if (KXianVector[i]->High > KX_Max->High) {
+			KX_Max = KXianVector[i];
+		}
+		if (KXianVector[i]->Low < KX_Min->Low) {
+			KX_Min = KXianVector[i];
+		}
+	}
+	vector<KXian*> retVector;
+	retVector.push_back(KX_Max);
+	retVector.push_back(KX_Min);
+	return retVector;
+}

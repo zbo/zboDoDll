@@ -14,5 +14,6 @@ void FillinPOutDefault(float* pfOUT, int DataLen);
 void PrintFxVector(vector<FXing *> FXVector_Clean);
 
 vector<KXian*> GenerateKXianVector(int DataLen, float* pfOUT, float* pfINa, float* pfINb, float* pfINc);
+vector<KXian*> FindMaxMinFromKXianVector(vector<KXian*> KXianVector);
 
 
