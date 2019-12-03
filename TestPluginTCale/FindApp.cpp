@@ -1,6 +1,11 @@
 #include "stdafx.h"
-#include "FindApp.h"
 #include <algorithm>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "Common.h"
+
 using namespace std;
 
 
@@ -53,7 +58,7 @@ KXian* DeepCopy(KXian* KXianIn)
 	return KX;
 }
 
-vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXianVector)
+__declspec(dllexport) vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXianVector)
 {
 	vector<KXian*> KXianVector_Clean;
 	vector<FXing*> FXingVector;
@@ -85,7 +90,7 @@ vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXianVector)
 	return FXingVector;
 }
 
-vector<FXing *> Find_Di_FX_BH(std::vector<KXian *> KXianVector)
+__declspec(dllexport) vector<FXing *> Find_Di_FX_BH(std::vector<KXian *> KXianVector)
 {
 	vector<KXian*> KXianVector_Clean;
 	vector<FXing*> FXingVector;

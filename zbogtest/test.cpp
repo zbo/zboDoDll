@@ -50,8 +50,27 @@ TestDataBag* LoadData(std::string file_path) {
 	return bag;
 }
 
+TEST(E2E, DAY420_CanGenerateFinalFXVector) {
+	TestDataBag* bag = LoadData("..\\testdata\\debug2.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	EXPECT_EQ(KXianVector.size(), 420);
+	vector<FXing*> FXVector = Find_Ding_FX_BH(KXianVector);
 
-TEST(UNIT, Test_FindMaxMinFromKXianVector) {
+}
+TEST(ALL_UNIT, Test_CanFindBHFromSimpleDing) {
+	TestDataBag* bag = LoadData("..\\testdata\\simple1.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	EXPECT_EQ(KXianVector.size(), 8);
+	vector<FXing*> FXVector = Find_Ding_FX_BH(KXianVector);
+	EXPECT_FLOAT_EQ(FXVector[0]->Second->High,5.3);
+	EXPECT_FLOAT_EQ(FXVector[0]->Second->Low, 2.3);
+	EXPECT_FLOAT_EQ(FXVector[0]->First->High, 2.2);
+	EXPECT_FLOAT_EQ(FXVector[0]->First->Low, 1.2);
+	EXPECT_FLOAT_EQ(FXVector[0]->Third->High, 2.2);
+	EXPECT_FLOAT_EQ(FXVector[0]->Third->Low, 1.2);
+}
+
+TEST(ALL_UNIT, Test_CanFindMaxMinFromKXianVector) {
 	TestDataBag* bag = LoadData("..\\testdata\\simple1.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(),8);
@@ -59,7 +78,6 @@ TEST(UNIT, Test_FindMaxMinFromKXianVector) {
 	EXPECT_EQ(KXianMaxMinVector.size(), 2);
 	EXPECT_FLOAT_EQ(KXianMaxMinVector[0]->High, 5.3);
 	EXPECT_FLOAT_EQ(KXianMaxMinVector[1]->Low, 1);
-
 }
 
 TEST(Sample, HelloWorld) {
