@@ -4,3 +4,8 @@
 2. Refactory const to enum
 3. Logic to arrange DD GD
 4. Add period in to input array
+
+
+
+defect1:
+	002957, 分型顶和底不能被下一个分型左右触碰

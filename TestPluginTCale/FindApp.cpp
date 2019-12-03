@@ -233,6 +233,26 @@ __declspec(dllexport) int Find_First_FX_Index_FromALL(vector<FXing*> FXVector)
 	}
 }
 
+__declspec(dllexport) vector<FXing*> Find_ALL_FX_FromAll(int first_index, vector<FXing*> FXVector)
+{
+	vector<int> all_FX_Vector_Index;
+	vector<FXing*> all_FX_Vector;
+	all_FX_Vector_Index.push_back(first_index);
+	FXSearchResult next_result = Finx_Next_FX_Index_FromAll(first_index, FXVector);
+	all_FX_Vector_Index.push_back(next_result.SecondFX_Index);
+	while (next_result.SecondFX_Confirmed) {
+		int before_search = next_result.SecondFX_Index;
+		next_result = Finx_Next_FX_Index_FromAll(next_result.SecondFX_Index, FXVector);
+		int after_search = next_result.SecondFX_Index;
+		if (before_search == after_search)break;
+		all_FX_Vector_Index.push_back(next_result.SecondFX_Index);
+	}
+	for (int i = 0; i < all_FX_Vector_Index.size(); i++) {
+		all_FX_Vector.push_back(FXVector[all_FX_Vector_Index[i]]);
+	}
+	return all_FX_Vector;
+}
+
 vector<FXing *> Find_Ding_FX_Without_BH(std::vector<KXian *> KXianVector)
 {
 	vector<FXing*> FXingVector;
