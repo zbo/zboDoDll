@@ -50,6 +50,18 @@ TestDataBag* LoadData(std::string file_path) {
 	return bag;
 }
 
+TEST(ALL_UNIT, Test_Can_Find_First_From_Simple3) {
+	TestDataBag* bag = LoadData("..\\testdata\\simple3.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	EXPECT_EQ(KXianVector.size(), 15);
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	FXing* firstFX = Find_First_FX_FromALL(FXVector);
+	EXPECT_FLOAT_EQ(firstFX->Second->Low, 1.0);
+	EXPECT_FLOAT_EQ(firstFX->FxType, FXing::Di);
+	EXPECT_EQ(firstFX->First->i, 6);
+	EXPECT_EQ(firstFX->Second->i, 7);
+	EXPECT_EQ(firstFX->Third->i, 8);
+}
 TEST(ALL_UNIT, Test_Can_Find_First_From_Simple2) {
 	TestDataBag* bag = LoadData("..\\testdata\\simple2.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);

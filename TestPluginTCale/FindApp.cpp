@@ -93,32 +93,68 @@ vector<FXing *> Adjust_All_FX(vector<FXing *> FXVector_Clean, vector<KXian *> al
 
 __declspec(dllexport) FXing* Find_First_FX_FromALL(vector<FXing*> FXVector)
 {
-	FXing* tempFirst = FXVector[0];
-	if (tempFirst->FxType == FXing::Ding) {
-		for (int i = 1; i < FXVector.size(); i++) {
+	FXing* tempFirstDing = nullptr;
+	FXing* tempFirstDi = nullptr;
+	int tempFirstDingIndex = 0;
+	int tempFirstDiIndex = 0;
+	bool firstDingValid = false;
+	bool firstDiValid = false;
+	for (int i = 0; i < FXVector.size(); i++) {
+		if (FXVector[i]->FxType == FXing::Ding)
+		{
+			tempFirstDing = FXVector[i];
+			tempFirstDingIndex = i;
+			break;
+		}
+	}
+	for (int i = 0; i < FXVector.size(); i++) {
+		if (FXVector[i]->FxType == FXing::Di)
+		{
+			tempFirstDi = FXVector[i];
+			tempFirstDiIndex = i;
+			break;
+		}
+	}
+	if (tempFirstDing!=nullptr) {
+		for (int i = tempFirstDingIndex; i < FXVector.size(); i++) {
 			/*顶分型后接顶分型，保留高顶那个顶分型*/
-			if (FXVector[i]->FxType == tempFirst->FxType) {
-				tempFirst=tempFirst->Second->High < FXVector[i]->Second->High ? FXVector[i]:tempFirst;
+			if (FXVector[i]->FxType == tempFirstDing->FxType) {
+				tempFirstDing=tempFirstDing->Second->High < FXVector[i]->Second->High ? FXVector[i]:tempFirstDing;
 			}/*顶分型后接底分型*/
-			else {
-				if (tempFirst->Third->i + 1 < FXVector[i]->First->i)
-					return tempFirst;
+			else {/*中间有独立K线*/
+				if (tempFirstDing->Third->i + 1 < FXVector[i]->First->i)
+					if(tempFirstDing->Second->Low>FXVector[i]->Second->High)/*顶底K区间独立*/
+					{
+						firstDingValid = true; break;
+					}
 			}
 		}
 	}
-	else {
-		for (int i = 1; i < FXVector.size(); i++) {
+	if(tempFirstDi!=nullptr) {
+		for (int i = tempFirstDiIndex; i < FXVector.size(); i++) {
 			/*底分型后接底分型，保留高顶那个顶分型*/
-			if (FXVector[i]->FxType == tempFirst->FxType) {
-				tempFirst = tempFirst->Second->Low > FXVector[i]->Second->Low ? FXVector[i] : tempFirst;
+			if (FXVector[i]->FxType == tempFirstDi->FxType) {
+				tempFirstDi = tempFirstDi->Second->Low > FXVector[i]->Second->Low ? FXVector[i] : tempFirstDi;
 			}/*底分型后接顶分型*/
 			else {
-				if (tempFirst->Third->i + 1 < FXVector[i]->First->i)
-					return tempFirst;
+				if (tempFirstDi->Third->i + 1 < FXVector[i]->First->i)
+					if (tempFirstDi->Second->High < FXVector[i]->Second->Low)/*底顶K区间独立*/
+					{
+						firstDiValid = true; break;
+					}
 			}
 		}
 	}
-	return tempFirst;
+	if (firstDingValid && firstDiValid) {
+		return tempFirstDing->Second->i < tempFirstDi->Second->i ? tempFirstDing : tempFirstDi;
+	}else if (!firstDingValid && !firstDiValid) {
+		return FXVector[0];
+	}else if (firstDingValid && !firstDiValid) {
+		return tempFirstDing;
+	}
+	else {
+		return tempFirstDi;
+	}
 }
 
 vector<FXing *> Find_Ding_FX_Without_BH(std::vector<KXian *> KXianVector)
