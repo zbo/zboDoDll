@@ -24,6 +24,7 @@ void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 {
 	ofstream outfile("out.txt",ios::app);	
 	vector<KXian*> KXianVector = GenerateKXianVector(DataLen,pfOUT,pfINa,pfINb,pfINc);
+	OutputDebugInfo(KXianVector);
 	//归类法找出所有可能的分型
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	int first_index = Find_First_FX_Index_FromALL(FXVector);
@@ -32,7 +33,7 @@ void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	FillinPOut(pfOUT, Final_FXVector);
 	outfile<<"------------------------------------------------"<<'\n';
 	outfile.close();
-	OutputDebugInfo(KXianVector);
+	
 }
 
 

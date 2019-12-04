@@ -177,3 +177,11 @@ TEST(ALL_UNIT, 002957_Can_Find_ALL_From_FXVector) {
 	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
 	EXPECT_EQ(Final_FXVector.size(),4);
 }
+
+TEST(ALL_UNIT, 002968_Can_Find_ALL_From_FXVector) {
+	TestDataBag* bag = LoadData("..\\testdata\\002968.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
+}
