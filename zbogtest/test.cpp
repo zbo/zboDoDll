@@ -147,8 +147,10 @@ TEST(ALL_UNIT, 002957_Can_Find_ALL_From_FXVector) {
 	int first_index = Find_First_FX_Index_FromALL(FXVector);
 	FXSearchResult next_result = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 	EXPECT_EQ(FXVector.size(), 33);
-	EXPECT_FLOAT_EQ(FXVector[first_index]->Second->High, 45.25);
-	EXPECT_FLOAT_EQ(next_result.SecondFX->Second->Low, 32.56);
+	EXPECT_EQ(FXVector[first_index]->FxType, FXing::Di);
+	EXPECT_FLOAT_EQ(FXVector[first_index]->Second->Low, 32.56);
+	EXPECT_EQ(next_result.SecondFX->FxType, FXing::Ding);
+	EXPECT_FLOAT_EQ(next_result.SecondFX->Second->High, 45.59);
 	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
-	EXPECT_EQ(Final_FXVector.size(),5);
+	EXPECT_EQ(Final_FXVector.size(),4);
 }
