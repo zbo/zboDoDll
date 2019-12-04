@@ -328,7 +328,7 @@ __declspec(dllexport) vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXian
 {
 	vector<KXian*> KXianVector_Clean;
 	vector<FXing*> FXingVector;
-	KXianVector_Clean.push_back(DeepCopy(KXianVector[0]));
+	KXianVector_Clean.push_back(KXianVector[0]);
 	for(int i=1; i<KXianVector.size()-1;i++){
 		int temp_lenght=KXianVector_Clean.size();
 		BaoHanRela baoHanRela = BaoHan(KXianVector_Clean[temp_lenght-1],KXianVector[i]);
@@ -348,8 +348,7 @@ __declspec(dllexport) vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXian
 			KXianVector_Clean.push_back(KX);
 		}
 		else{
-			KXian* tempKX = DeepCopy(KXianVector[i]);
-			KXianVector_Clean.push_back(tempKX);
+			KXianVector_Clean.push_back(KXianVector[i]);
 		}
 	}
 	FXingVector = Find_Ding_FX_Without_BH(KXianVector_Clean);
@@ -379,8 +378,7 @@ __declspec(dllexport) vector<FXing *> Find_Di_FX_BH(std::vector<KXian *> KXianVe
 			KXianVector_Clean.push_back(KX);
 		}
 		else{
-			KXian* tempKX = DeepCopy(KXianVector[i]);
-			KXianVector_Clean.push_back(tempKX);
+			KXianVector_Clean.push_back(KXianVector[i]);
 		}
 	}
 	FXingVector = Find_Di_FX_Without_BH(KXianVector_Clean);

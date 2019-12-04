@@ -136,7 +136,7 @@ TEST(ALL_UNIT, 002961_Can_Find_FirstFX_From_FXVector) {
 	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(next_result1.SecondFX_Index, FXVector);
 	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(next_result2.SecondFX_Index, FXVector);
-	EXPECT_EQ(FXVector.size(), 50);
+	EXPECT_EQ(FXVector.size(), 59);
 	EXPECT_EQ(next_result1.SecondFX_Index, 24);
 	EXPECT_EQ(next_result1.ThirdFX_Index, 33);
 	EXPECT_EQ(next_result2.SecondFX_Index, 33);
