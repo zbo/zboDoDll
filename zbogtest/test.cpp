@@ -127,16 +127,41 @@ TEST(E2E, DAY420) {
 	TestPlugin2(DataLength, out, pfINa, pfINb, pfINc);
 }
 
-TEST(ALL_UNIT, 002957_Can_Find_FirstFX_From_FXVector) {
-	TestDataBag* bag = LoadData("..\\testdata\\002957.txt");
+TEST(ALL_UNIT, 002961_Can_Find_FirstFX_From_FXVector) {
+	TestDataBag* bag = LoadData("..\\testdata\\002961.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
-	EXPECT_EQ(KXianVector.size(), 87);
+	EXPECT_EQ(KXianVector.size(), 59);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	int first_index = Find_First_FX_Index_FromALL(FXVector);
-	FXSearchResult next_result = Finx_Next_FX_Index_FromAll(first_index, FXVector);
-	EXPECT_EQ(FXVector.size(), 33);
-	EXPECT_FLOAT_EQ(FXVector[first_index]->Second->High, 45.25);
-	EXPECT_FLOAT_EQ(next_result.SecondFX->Second->Low,32.56);
+	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
+	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(next_result1.SecondFX_Index, FXVector);
+	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(next_result2.SecondFX_Index, FXVector);
+	EXPECT_EQ(FXVector.size(), 50);
+	EXPECT_EQ(next_result1.SecondFX_Index, 24);
+	EXPECT_EQ(next_result1.ThirdFX_Index, 33);
+	EXPECT_EQ(next_result2.SecondFX_Index, 33);
+	EXPECT_EQ(next_result2.ThirdFX_Index, 38);
+	EXPECT_EQ(next_result3.SecondFX_Index, 38);
+	EXPECT_EQ(next_result3.ThirdFX_Index, 41);
+
+}
+
+TEST(ALL_UNIT, 002958_Can_Find_FirstFX_From_FXVector) {
+	TestDataBag* bag = LoadData("..\\testdata\\002958.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	EXPECT_EQ(KXianVector.size(), 171);
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
+	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(next_result1.SecondFX_Index, FXVector);
+	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(next_result2.SecondFX_Index, FXVector);
+	EXPECT_EQ(FXVector.size(), 50);
+	EXPECT_EQ(next_result1.SecondFX_Index, 24);
+	EXPECT_EQ(next_result1.ThirdFX_Index, 33);
+	EXPECT_EQ(next_result2.SecondFX_Index, 33);
+	EXPECT_EQ(next_result2.ThirdFX_Index, 38);
+	EXPECT_EQ(next_result3.SecondFX_Index, 38);
+	EXPECT_EQ(next_result3.ThirdFX_Index, 41);
 }
 
 TEST(ALL_UNIT, 002957_Can_Find_ALL_From_FXVector) {

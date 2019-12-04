@@ -138,25 +138,25 @@ FXSearchResult FindNextFromFloat(int secondFX_Index, vector<FXing*> FXVector)
 				confirmed_Second_FX = FXVector[i];
 			}
 		}
-		else if (confirmed_Second_FX->FxType == FXing::Ding)
-			if(confirmed_Second_FX->Second->Low < FXVector[i]->Second->High||
-				confirmed_Second_FX->First->Low< FXVector[i]->Second->High ||
-				confirmed_Second_FX->Third->Low < FXVector[i]->Second->High||
-				confirmed_Second_FX->Second->Low< FXVector[i]->First->High ||
-				confirmed_Second_FX->Second->Low < FXVector[i]->Third->High)
-				continue;
-		else if (confirmed_Second_FX->FxType == FXing::Di)
-			if(confirmed_Second_FX->Second->High > FXVector[i]->Second->Low||
-				confirmed_Second_FX->First->High > FXVector[i]->Second->Low||
-				confirmed_Second_FX->Third->High > FXVector[i]->Second->Low||
-				confirmed_Second_FX->Second->High > FXVector[i]->First->Low||
-				confirmed_Second_FX->Second->High > FXVector[i]->Third->Low)
-				continue;
 		else {
+			if (confirmed_Second_FX->FxType == FXing::Ding)
+				if (confirmed_Second_FX->Second->Low < FXVector[i]->Second->High ||
+					confirmed_Second_FX->First->Low < FXVector[i]->Second->High ||
+					confirmed_Second_FX->Third->Low < FXVector[i]->Second->High ||
+					confirmed_Second_FX->Second->Low < FXVector[i]->First->High ||
+					confirmed_Second_FX->Second->Low < FXVector[i]->Third->High)
+					continue;
+			if (confirmed_Second_FX->FxType == FXing::Di)
+				if (confirmed_Second_FX->Second->High > FXVector[i]->Second->Low ||
+					confirmed_Second_FX->First->High > FXVector[i]->Second->Low ||
+					confirmed_Second_FX->Third->High > FXVector[i]->Second->Low ||
+					confirmed_Second_FX->Second->High > FXVector[i]->First->Low ||
+					confirmed_Second_FX->Second->High > FXVector[i]->Third->Low)
+					continue;
 			float_Third_FX_Index = i;
 			break;
+			}
 		}
-	}
 	FXSearchResult result;
 	result.SecondFX = confirmed_Second_FX;
 	result.ThirdFX = FXVector[float_Third_FX_Index];
