@@ -324,28 +324,59 @@ KXian* DeepCopy(KXian* KXianIn)
 	return KX;
 }
 
+vector<KXian*> ProcessBaoHan(vector<KXian*> KXVClean, KXian* KXianIn, BaoHanRela baoHanRela, FXing::DINGDI dingdi)
+{
+	KXian* KX = new KXian;
+	if (dingdi == FXing::Ding) {
+		if (baoHanRela.BHType == BaoHanRela::QianDa) {
+			KX->High = KXVClean[KXVClean.size() - 1]->High;
+			KX->Low = KXianIn->Low;
+		}
+		else {
+			KX->High = KXianIn->High;
+			KX->Low = KXVClean[KXVClean.size() - 1]->Low;
+		}
+	}
+	else {
+		if (baoHanRela.BHType == BaoHanRela::QianDa) {
+			KX->High = KXianIn->High;
+			KX->Low = KXVClean[KXVClean.size() - 1]->Low;
+		}
+		else {
+			KX->High = KXVClean[KXVClean.size() - 1]->High;
+			KX->Low = KXianIn->Low;
+		}
+	}
+	KX->i = KXianIn->i;
+	KX->BHan = true;
+	//包含完成，最后一个必然失效，但是包含结果还需继续和再前一个处理包含
+	KXVClean.pop_back();
+	if (KXVClean.size() == 0) {
+		KXVClean.push_back(KX);
+	}
+	else {
+		BaoHanRela rela = BaoHan(KXVClean[KXVClean.size() - 1], KX);
+		if (rela.isBaoHan == false) {
+			KXVClean.push_back(KX);
+		}
+		else {
+			KXVClean = ProcessBaoHan(KXVClean, KX, rela, dingdi);
+		}
+	}
+	return KXVClean;
+	
+}
+
 __declspec(dllexport) vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXianVector)
 {
 	vector<KXian*> KXianVector_Clean;
 	vector<FXing*> FXingVector;
 	KXianVector_Clean.push_back(KXianVector[0]);
 	for(int i=1; i<KXianVector.size()-1;i++){
-		int temp_lenght=KXianVector_Clean.size();
-		BaoHanRela baoHanRela = BaoHan(KXianVector_Clean[temp_lenght-1],KXianVector[i]);
+		int csize=KXianVector_Clean.size();
+		BaoHanRela baoHanRela = BaoHan(KXianVector_Clean[csize-1],KXianVector[i]);
 		if(baoHanRela.isBaoHan){
-			KXian* KX = new KXian;
-			KX->i=i;
-			if(baoHanRela.BHType==BaoHanRela::QianDa){
-				KX->High=KXianVector_Clean[temp_lenght-1]->High;
-				KX->Low=KXianVector[i]->Low;}
-			else{
-				KX->High=KXianVector[i]->High;
-				KX->Low=KXianVector_Clean[temp_lenght-1]->Low;
-			}
-			KX->BHan=true;
-			//delete baohan process finished K
-			KXianVector_Clean.pop_back();
-			KXianVector_Clean.push_back(KX);
+			KXianVector_Clean = ProcessBaoHan(KXianVector_Clean, KXianVector[i], baoHanRela, FXing::Ding);
 		}
 		else{
 			KXianVector_Clean.push_back(KXianVector[i]);
@@ -364,18 +395,7 @@ __declspec(dllexport) vector<FXing *> Find_Di_FX_BH(std::vector<KXian *> KXianVe
 		int temp_lenght=KXianVector_Clean.size();
 		BaoHanRela baoHanRela = BaoHan(KXianVector_Clean[temp_lenght-1],KXianVector[i]);
 		if(baoHanRela.isBaoHan){
-			KXian* KX = new KXian;
-			KX->i=i;
-			if(baoHanRela.BHType==BaoHanRela::QianDa){
-				KX->High=KXianVector[i]->High;
-				KX->Low=KXianVector_Clean[temp_lenght-1]->Low;}
-			else{
-				KX->High=KXianVector_Clean[temp_lenght-1]->High;
-				KX->Low=KXianVector[i]->Low;
-			}
-			KX->BHan=true;
-			KXianVector_Clean.pop_back();
-			KXianVector_Clean.push_back(KX);
+			KXianVector_Clean = ProcessBaoHan(KXianVector_Clean, KXianVector[i], baoHanRela, FXing::Di);
 		}
 		else{
 			KXianVector_Clean.push_back(KXianVector[i]);

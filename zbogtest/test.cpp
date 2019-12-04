@@ -136,13 +136,11 @@ TEST(ALL_UNIT, 002961_Can_Find_FirstFX_From_FXVector) {
 	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(next_result1.SecondFX_Index, FXVector);
 	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(next_result2.SecondFX_Index, FXVector);
-	EXPECT_EQ(FXVector.size(), 59);
-	EXPECT_EQ(next_result1.SecondFX_Index, 24);
-	EXPECT_EQ(next_result1.ThirdFX_Index, 33);
-	EXPECT_EQ(next_result2.SecondFX_Index, 33);
-	EXPECT_EQ(next_result2.ThirdFX_Index, 38);
-	EXPECT_EQ(next_result3.SecondFX_Index, 38);
-	EXPECT_EQ(next_result3.ThirdFX_Index, 41);
+	EXPECT_EQ(FXVector.size(), 15);
+	EXPECT_EQ(FXVector[first_index]->FxType, FXing::Di);
+	EXPECT_FLOAT_EQ(FXVector[first_index]->Second->Low, 27.33);
+	EXPECT_EQ(next_result1.SecondFX->FxType, FXing::Ding);
+	EXPECT_FLOAT_EQ(next_result1.SecondFX->Second->High, 36.77);
 
 }
 
@@ -155,13 +153,13 @@ TEST(ALL_UNIT, 002958_Can_Find_FirstFX_From_FXVector) {
 	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(next_result1.SecondFX_Index, FXVector);
 	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(next_result2.SecondFX_Index, FXVector);
-	EXPECT_EQ(FXVector.size(), 50);
-	EXPECT_EQ(next_result1.SecondFX_Index, 24);
-	EXPECT_EQ(next_result1.ThirdFX_Index, 33);
-	EXPECT_EQ(next_result2.SecondFX_Index, 33);
-	EXPECT_EQ(next_result2.ThirdFX_Index, 38);
-	EXPECT_EQ(next_result3.SecondFX_Index, 38);
-	EXPECT_EQ(next_result3.ThirdFX_Index, 41);
+	EXPECT_EQ(FXVector.size(), 51);
+	EXPECT_EQ(next_result1.SecondFX_Index, 25);
+	EXPECT_EQ(next_result1.ThirdFX_Index, 32);
+	EXPECT_EQ(next_result2.SecondFX_Index, 34);
+	EXPECT_EQ(next_result2.ThirdFX_Index, 39);
+	EXPECT_EQ(next_result3.SecondFX_Index, 39);
+	EXPECT_EQ(next_result3.ThirdFX_Index, 42);
 }
 
 TEST(ALL_UNIT, 002957_Can_Find_ALL_From_FXVector) {
