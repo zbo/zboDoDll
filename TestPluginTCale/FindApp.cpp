@@ -80,10 +80,12 @@ vector<FXing *> Adjust_All_FX(vector<FXing *> FXVector_Clean, vector<KXian *> al
 		if(FX->Third->i>FX->First->i+2){
 			 if(FX->FxType==FXing::Ding){
 				 KXian* GDKXian=Find_GD_KX(FX,allKXianVector); 
-				 FX->Second=GDKXian;
+				 FX->Second->High=GDKXian->High;
+				 FX->Second->i = GDKXian->i;
 			 }else{
 				 KXian* DDKXian=Find_DD_KX(FX,allKXianVector);
-				 FX->Second=DDKXian;
+				 FX->Second->Low=DDKXian->Low;
+				 FX->Second->i = DDKXian->i;
 			 }
 		}
 		Adjust_FXing_Vector.push_back(FX);
