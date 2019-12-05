@@ -3,6 +3,7 @@
 #include "../TestPluginTCale/TCalcFuncSets.h"
 #include "../TestPluginTCale/SearchApp.h"
 #include "../TestPluginTCale/FindApp.h"
+#include "../TestPluginTCale/BI.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -196,3 +197,19 @@ TEST(ALL_UNIT, 999999_Can_Find_ALL_From_FXVector) {
 	EXPECT_FLOAT_EQ(FXVector[6]->Second->High, 2901.36);
 	EXPECT_FLOAT_EQ(FXVector[6]->Second->Low, 2879.69);
 }
+
+TEST(ALL_UNIT, 600000_Can_Find_ALL_From_FXVector) {
+	TestDataBag* bag = LoadData("..\\testdata\\600000.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
+	/*ISSUE Between index 2 and 3*/
+	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
+	int second_index = next_result1.SecondFX_Index;
+	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(second_index, FXVector);
+	int third_index = next_result2.SecondFX_Index;
+	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(third_index, FXVector);
+	//EXPECT_EQ(FXVector.size(), 9);
+}
+

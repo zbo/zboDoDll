@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BI.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="FindApp.cpp" />
     <ClCompile Include="SearchApp.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="TestPluginTCale.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BI.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="FindApp.h" />
     <ClInclude Include="PluginTCalcFunc.h" />

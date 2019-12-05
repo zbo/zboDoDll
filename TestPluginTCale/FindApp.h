@@ -13,6 +13,4 @@ vector<FXing*> Find_Ding_FX_BH(std::vector<KXian*> KXianVector);
 vector<FXing*> Find_Di_FX_BH(std::vector<KXian*> KXianVector);
 int Find_First_FX_Index_FromALL(vector<FXing*> FXVector);
 vector<FXing*> Find_Final_FXVector(vector<FXing*> FXVector);
-FXSearchResult Finx_Next_FX_Index_FromAll(int firstFX_Index, vector<FXing*> FXVector);
-FXSearchResult FindNextFromFloat(int secondFX_Index, vector<FXing*> FXVector);
 vector<FXing*> Find_ALL_FX_FromAll(int first_index, vector<FXing*> FXVector);
