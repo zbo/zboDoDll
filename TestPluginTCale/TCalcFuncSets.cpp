@@ -29,7 +29,7 @@ void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	//归类法找出所有可能的分型
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	FXSearchResult result= Find_First_FX_Index_FromALL(FXVector);
-	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.SecondFX_Index, FXVector);
+	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.FirstFX_Index, FXVector);
 	FillinPOutDefault(pfOUT,DataLen);
 	FillinPOut(pfOUT, Final_FXVector);
 	outfile<<"------------------------------------------------"<<'\n';

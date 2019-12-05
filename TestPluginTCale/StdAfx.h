@@ -34,11 +34,11 @@ public:
 };
 
 struct FXSearchResult {
+	FXing* FirstFX;
 	FXing* SecondFX;
-	FXing* ThirdFX;
+	int FirstFX_Index;
 	int SecondFX_Index;
-	int ThirdFX_Index;
-	bool SecondFX_Confirmed;
+	bool FirstFX_Confirmed;
 };
 
 struct BaoHanRela{

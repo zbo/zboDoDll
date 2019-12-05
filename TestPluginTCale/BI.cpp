@@ -74,11 +74,11 @@ FXSearchResult FindNextFromFloat(int secondFX_Index, vector<FXing*> FXVector)
 		}
 	}
 	FXSearchResult result;
-	result.SecondFX = confirmed_Second_FX;
-	result.ThirdFX = FXVector[float_Third_FX_Index];
-	result.SecondFX_Confirmed = confirmed_Second_FX_Index == float_Third_FX_Index ? false : true;
-	result.SecondFX_Index = confirmed_Second_FX_Index;
-	result.ThirdFX_Index = float_Third_FX_Index;
+	result.FirstFX = confirmed_Second_FX;
+	result.SecondFX = FXVector[float_Third_FX_Index];
+	result.FirstFX_Confirmed = confirmed_Second_FX_Index == float_Third_FX_Index ? false : true;
+	result.FirstFX_Index = confirmed_Second_FX_Index;
+	result.SecondFX_Index = float_Third_FX_Index;
 	return result;
 }
 
@@ -101,8 +101,8 @@ int Find_First(FXing::DINGDI dingdi, vector<FXing*> FXVector) {
 __declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> FXVector)
 {
 	FXSearchResult result;
+	result.FirstFX_Index = 0;
 	result.SecondFX_Index = 0;
-	result.ThirdFX_Index = 0;
 	FXSearchResult tempResultDing;
 	FXSearchResult tempResultDi;
 	if (FXVector.size() == 0) return result;
@@ -138,10 +138,10 @@ __declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> 
 						tempFirstDing->Third->Low > FXVector[i]->Second->High)/*顶底K区间独立*/
 					{
 						firstDingValid = true; 
-						tempResultDing.ThirdFX_Index = i;
-						tempResultDing.ThirdFX = FXVector[i];
-						tempResultDing.SecondFX = tempFirstDing;
-						tempResultDing.SecondFX_Index = tempFirstDingIndex;
+						tempResultDing.SecondFX_Index = i;
+						tempResultDing.SecondFX = FXVector[i];
+						tempResultDing.FirstFX = tempFirstDing;
+						tempResultDing.FirstFX_Index = tempFirstDingIndex;
 						break;
 					}
 			}
@@ -167,10 +167,10 @@ __declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> 
 						)/*底顶K区间独立*/
 					{
 						firstDiValid = true; 
-						tempResultDi.ThirdFX_Index = i;
-						tempResultDi.ThirdFX = FXVector[i];
-						tempResultDi.SecondFX = tempFirstDi;
-						tempResultDi.SecondFX_Index = tempFirstDiIndex;
+						tempResultDi.SecondFX_Index = i;
+						tempResultDi.SecondFX = FXVector[i];
+						tempResultDi.FirstFX = tempFirstDi;
+						tempResultDi.FirstFX_Index = tempFirstDiIndex;
 						break;
 					}
 			}
@@ -192,8 +192,8 @@ __declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> 
 		result = tempResultDing;
 	}
 	else {
+		result.FirstFX_Index = 0;
 		result.SecondFX_Index = 0;
-		result.ThirdFX_Index = 0;
 	}
 	return result;
 }
@@ -202,7 +202,7 @@ __declspec(dllexport) BI* FindFirstBI(vector<FXing*> FXVector)
 {
 	BI* first_bi = new BI;
 	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
-	first_bi->FirstFX = result.SecondFX;
-	first_bi->SecondFX = result.ThirdFX;
+	first_bi->FirstFX = result.FirstFX;
+	first_bi->SecondFX = result.SecondFX;
 	return first_bi;
 }
