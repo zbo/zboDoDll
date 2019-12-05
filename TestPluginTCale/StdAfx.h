@@ -50,6 +50,8 @@ public:
 	FXing* FirstFX;
 	FXing* SecondFX;
 	FANGXIANG BITpye;
+	float High;
+	float Low;
 	int Start;
 	int End;
 };
