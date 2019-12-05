@@ -98,7 +98,7 @@ int Find_First(FXing::DINGDI dingdi, vector<FXing*> FXVector) {
 	}
 }
 
-__declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> FXVector)
+__declspec(dllexport) FXSearchResult Find_First_FX_FromALL(vector<FXing*> FXVector)
 {
 	FXSearchResult result;
 	result.FirstFX_Index = 0;
@@ -204,13 +204,13 @@ __declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> 
 __declspec(dllexport) BI* FindFirstBI(vector<FXing*> FXVector)
 {
 	BI* first_bi = new BI;
-	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult result = Find_First_FX_FromALL(FXVector);
 	first_bi->FirstFX = result.FirstFX;
 	first_bi->SecondFX = result.SecondFX;
 	return first_bi;
 }
 
-bool DingDiDuLi(FXing* FxDing, FXing* FxDi)
+bool DingDiDuLi2(FXing* FxDing, FXing* FxDi)
 {
 	bool dingDuLi = FxDing->Second->Low > FxDi->First->High&&
 		FxDing->Second->Low > FxDi->Second->High&&
@@ -220,6 +220,21 @@ bool DingDiDuLi(FXing* FxDing, FXing* FxDi)
 		FxDi->Second->High < FxDing->Second->Low &&
 		FxDi->Second->High < FxDing->Third->Low;
 	return dingDuLi && diDuLi;
+}
+bool DingDiDuLi(FXing* FxDing, FXing* FxDi)
+{
+	bool dingdifenli = FxDing->Second->Low > FxDi->Second->High;
+	bool dinggao = FxDing->Second->High > FxDi->First->High&&
+				   FxDing->Second->High > FxDi->Third->High;
+	bool didi = FxDi->Second->Low < FxDing->First->Low &&
+		           FxDi->Second->Low < FxDing->Third->Low;
+	return dingdifenli&&dinggao&&didi;
+}
+
+bool DingDiJianK(FXing* SecondFX, FXing* FX)
+{
+	if (SecondFX->Third->i< FX->First->i) return true;
+	else { return false; }
 }
 
 __declspec(dllexport) FXSearchResult Finx_Next_FX_FromAll(FXSearchResult result1, vector<FXing*> FXVector)
@@ -247,9 +262,14 @@ __declspec(dllexport) FXSearchResult Finx_Next_FX_FromAll(FXSearchResult result1
 				return result1;
 			}
 		}
+		//如果前后FX类型不同，其中必须有独立单位，缺口除外
+
 		if (result1.SecondFX->FxType == FXing::Ding &&
 			FXVector[i]->FxType == FXing::Di) {
-			if (DingDiDuLi(result1.SecondFX, FXVector[i])) {
+			if (DingDiDuLi(result1.SecondFX, FXVector[i])) 
+			if((result1.SecondFX->contain_gap()&&FXVector[i]->contain_gap())||
+				DingDiJianK(result1.SecondFX,FXVector[i]))
+			{
 				result2.FirstFX = result1.SecondFX;
 				result2.FirstFX_Index = result1.SecondFX_Index;
 				result2.SecondFX = FXVector[i];
@@ -259,7 +279,10 @@ __declspec(dllexport) FXSearchResult Finx_Next_FX_FromAll(FXSearchResult result1
 		}
 		if (result1.SecondFX->FxType == FXing::Di &&
 			FXVector[i]->FxType == FXing::Ding) {
-			if (DingDiDuLi(FXVector[i], result1.SecondFX)) {
+			if (DingDiDuLi(FXVector[i], result1.SecondFX)) 
+			if ((result1.SecondFX->contain_gap() && FXVector[i]->contain_gap()) ||
+				DingDiJianK(result1.SecondFX, FXVector[i]))
+			{
 				result2.FirstFX = result1.SecondFX;
 				result2.FirstFX_Index = result1.SecondFX_Index;
 				result2.SecondFX = FXVector[i];
@@ -270,4 +293,38 @@ __declspec(dllexport) FXSearchResult Finx_Next_FX_FromAll(FXSearchResult result1
 	}
 	result2.FirstFX_Confirmed = false;
 	return result2;
+}
+
+
+__declspec(dllexport) vector<int> Generate_Final_Index(FXSearchResult& result1, vector<FXing*> FXVector)
+{
+	vector<int> final_FX_Index;
+	final_FX_Index.push_back(result1.FirstFX_Index);
+	final_FX_Index.push_back(result1.SecondFX_Index);
+	while (result1.FirstFX_Confirmed) {
+		FXSearchResult result2 = Finx_Next_FX_FromAll(result1, FXVector);
+		result1 = result2;
+		if (result1.FirstFX_Confirmed == false) { break; }
+		int kept_second = final_FX_Index[final_FX_Index.size() - 1];
+		int kept_first = final_FX_Index[final_FX_Index.size() - 2];
+		if (kept_first == result2.FirstFX_Index) {
+			final_FX_Index[final_FX_Index.size() - 1] = result2.SecondFX_Index;
+		}
+		else if (kept_second == result2.FirstFX_Index) {
+			final_FX_Index.push_back(result2.SecondFX_Index);
+		}
+		else {
+			throw std::logic_error("The method or operation is not implemented.");
+		}
+	}
+	return final_FX_Index;
+}
+
+__declspec(dllexport) vector<FXing*> Generate_Final_FX(vector<int> final_index, vector<FXing*> FXVector)
+{
+	vector<FXing*> final;
+	for (int i = 0; i < final_index.size(); i++) {
+		final.push_back(FXVector[final_index[i]]);
+	}
+	return final;
 }

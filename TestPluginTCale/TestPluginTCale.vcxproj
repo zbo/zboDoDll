@@ -141,6 +141,7 @@
     <ClCompile Include="BI.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="FindApp.cpp" />
+    <ClCompile Include="FX.cpp" />
     <ClCompile Include="SearchApp.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -155,6 +156,7 @@
     <ClInclude Include="BI.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="FindApp.h" />
+    <ClInclude Include="FX.h" />
     <ClInclude Include="PluginTCalcFunc.h" />
     <ClInclude Include="SearchApp.h" />
     <ClInclude Include="StdAfx.h" />

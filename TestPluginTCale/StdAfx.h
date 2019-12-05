@@ -23,8 +23,25 @@ public:
 	KXian* First;
 	KXian* Second;
 	KXian* Third;
-	//int FXType;
 	DINGDI FxType;
+	float get_max_gap() {
+		float gap1 = 0;
+		float gap2 = 0;
+		if (this->FxType == Ding) {
+			gap1 = this->Second->Low - this->First->High;
+			gap2 = this->Second->Low - this->Third->High;
+			return gap1 > gap2 ? gap1 : gap2;
+		}
+		else {
+			gap1 = this->First->Low-this->Second->High;
+			gap2 = this->Third->Low - this->Second->High;
+			return gap1 > gap2 ? gap1 : gap2;
+		}
+	};
+	bool contain_gap() {
+		float gap = this->get_max_gap();
+		return gap*9 > this->Second->High;
+	}
 };
 
 class BI {

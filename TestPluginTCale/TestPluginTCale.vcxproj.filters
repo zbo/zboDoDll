@@ -36,6 +36,9 @@
     <ClCompile Include="BI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PluginTCalcFunc.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FX.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
