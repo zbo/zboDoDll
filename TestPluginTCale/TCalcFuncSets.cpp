@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "SearchApp.h"
 #include "FindApp.h"
+#include "BI.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -27,8 +28,8 @@ void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	OutputDebugInfo(KXianVector);
 	//归类法找出所有可能的分型
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int first_index = Find_First_FX_Index_FromALL(FXVector);
-	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
+	FXSearchResult result= Find_First_FX_Index_FromALL(FXVector);
+	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.SecondFX_Index, FXVector);
 	FillinPOutDefault(pfOUT,DataLen);
 	FillinPOut(pfOUT, Final_FXVector);
 	outfile<<"------------------------------------------------"<<'\n';

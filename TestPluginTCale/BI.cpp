@@ -88,3 +88,116 @@ __declspec(dllexport) FXSearchResult Finx_Next_FX_Index_FromAll(int firstFX_Inde
 	FXSearchResult result = FindNextFromFloat(secondFX_Index, FXVector);
 	return result;
 }
+
+int Find_First(FXing::DINGDI dingdi, vector<FXing*> FXVector) {
+	for (int i = 0; i < FXVector.size(); i++) {
+		if (FXVector[i]->FxType == dingdi)
+		{
+			return i;
+		}
+	}
+}
+
+__declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> FXVector)
+{
+	FXSearchResult result;
+	result.SecondFX_Index = 0;
+	result.ThirdFX_Index = 0;
+	if (FXVector.size() == 0) return result;
+	FXing* tempFirstDing = nullptr;
+	FXing* tempFirstDi = nullptr;
+	int tempFirstDingIndex = 0;
+	int tempFirstDiIndex = 0;
+	bool firstDingValid = false;
+	bool firstDiValid = false;
+
+	tempFirstDingIndex = Find_First(FXing::Ding, FXVector);
+	tempFirstDing = FXVector[tempFirstDingIndex];
+	tempFirstDiIndex = Find_First(FXing::Di, FXVector);
+	tempFirstDi = FXVector[tempFirstDiIndex];
+
+	if (tempFirstDing != nullptr) {
+		for (int i = tempFirstDingIndex; i < FXVector.size(); i++) {
+			firstDingValid = false;
+			/*顶分型后接顶分型，保留高顶那个顶分型*/
+			if (FXVector[i]->FxType == FXing::Ding) {
+				if (tempFirstDing->Second->High < FXVector[i]->Second->High)
+				{
+					tempFirstDing = FXVector[i];
+					tempFirstDingIndex = i;
+				}
+			}/*顶分型后接底分型*/
+			else {/*中间有独立K线*/
+				if (tempFirstDing->Third->i + 1 < FXVector[i]->First->i)
+					if (tempFirstDing->Second->Low > FXVector[i]->Second->High&&
+						tempFirstDing->Second->Low > FXVector[i]->First->High&&
+						tempFirstDing->Second->Low > FXVector[i]->Third->High&&
+						tempFirstDing->First->Low > FXVector[i]->Second->High&&
+						tempFirstDing->Third->Low > FXVector[i]->Second->High)/*顶底K区间独立*/
+					{
+						firstDingValid = true; 
+						result.ThirdFX_Index = i;
+						result.ThirdFX = FXVector[i];
+						break;
+					}
+			}
+		}
+	}
+	if (tempFirstDi != nullptr) {
+		for (int i = tempFirstDiIndex; i < FXVector.size(); i++) {
+			firstDiValid = false;
+			/*底分型后接底分型，保留高顶那个顶分型*/
+			if (FXVector[i]->FxType == FXing::Di) {
+				if (tempFirstDi->Second->Low > FXVector[i]->Second->Low) {
+					tempFirstDi = FXVector[i];
+					tempFirstDiIndex = i;
+				}
+			}/*底分型后接顶分型*/
+			else {
+				if (tempFirstDi->Third->i + 1 < FXVector[i]->First->i)
+					if (tempFirstDi->Second->High < FXVector[i]->Second->Low &&
+						tempFirstDi->Second->High < FXVector[i]->First->Low &&
+						tempFirstDi->Second->High < FXVector[i]->Third->Low &&
+						tempFirstDi->First->High < FXVector[i]->Second->Low &&
+						tempFirstDi->Third->High < FXVector[i]->Second->Low
+						)/*底顶K区间独立*/
+					{
+						firstDiValid = true; 
+						result.ThirdFX_Index = i;
+						result.ThirdFX = FXVector[i];
+						break;
+					}
+			}
+		}
+	}
+	if (firstDingValid && firstDiValid) {
+		if (tempFirstDing->Second->i < tempFirstDi->Second->i)
+		{
+			result.SecondFX = tempFirstDing;
+			result.SecondFX_Index = tempFirstDingIndex;
+		}
+		else {
+			result.SecondFX = tempFirstDi;
+			result.SecondFX_Index = tempFirstDiIndex;
+		}
+	}
+	else if (!firstDingValid && firstDiValid) {
+		result.SecondFX = tempFirstDi;
+		result.SecondFX_Index = tempFirstDiIndex;
+	}
+	else if (firstDingValid && !firstDiValid) {
+		result.SecondFX = tempFirstDing;
+		result.SecondFX_Index = tempFirstDingIndex;
+	}
+	else {
+		result.SecondFX_Index = 0;
+		result.ThirdFX_Index = 0;
+	}
+	return result;
+}
+
+__declspec(dllexport) BI* FindFirstBI(vector<FXing*> FXVector)
+{
+	BI* first_bi = new BI;
+	return first_bi;
+}

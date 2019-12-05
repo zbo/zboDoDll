@@ -59,7 +59,8 @@ TEST(ALL_UNIT, Test_Can_Find_First_From_Simple3) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 15);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int index= Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	int index= result.SecondFX_Index;
 	FXing* firstFX = FXVector[index];
 	EXPECT_FLOAT_EQ(firstFX->Second->Low, 1.0);
 	EXPECT_FLOAT_EQ(firstFX->FxType, FXing::Di);
@@ -72,7 +73,8 @@ TEST(ALL_UNIT, Test_Can_Find_First_From_Simple2) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 14);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	FXing* firstFX = FXVector[Find_First_FX_Index_FromALL(FXVector)];
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	FXing* firstFX = FXVector[result.SecondFX_Index];
 	EXPECT_FLOAT_EQ(firstFX->Second->High, 5.3);
 	EXPECT_FLOAT_EQ(firstFX->FxType, FXing::Ding);
 	EXPECT_EQ(firstFX->First->i, 1);
@@ -133,7 +135,8 @@ TEST(ALL_UNIT, 002961_Can_Find_FirstFX_From_FXVector) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 59);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	int first_index = result.SecondFX_Index;
 	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(next_result1.SecondFX_Index, FXVector);
 	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(next_result2.SecondFX_Index, FXVector);
@@ -150,7 +153,8 @@ TEST(ALL_UNIT, 002958_Can_Find_FirstFX_From_FXVector) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 171);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	int first_index = result.SecondFX_Index;
 	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(next_result1.SecondFX_Index, FXVector);
 	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(next_result2.SecondFX_Index, FXVector);
@@ -168,7 +172,8 @@ TEST(ALL_UNIT, 002957_Can_Find_ALL_From_FXVector) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	EXPECT_EQ(KXianVector.size(), 87);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	int first_index =result.SecondFX_Index;
 	FXSearchResult next_result = Finx_Next_FX_Index_FromAll(first_index, FXVector);
 	EXPECT_EQ(FXVector.size(), 33);
 	EXPECT_EQ(FXVector[first_index]->FxType, FXing::Di);
@@ -183,7 +188,8 @@ TEST(ALL_UNIT, 002968_Can_Find_ALL_From_FXVector) {
 	TestDataBag* bag = LoadData("..\\testdata\\002968.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int first_index = Find_First_FX_Index_FromALL(FXVector);
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	int first_index = result.SecondFX_Index;
 	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
 }
 
@@ -191,8 +197,8 @@ TEST(ALL_UNIT, 999999_Can_Find_ALL_From_FXVector) {
 	TestDataBag* bag = LoadData("..\\testdata\\999999.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int first_index = Find_First_FX_Index_FromALL(FXVector);
-	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.SecondFX_Index, FXVector);
 	EXPECT_EQ(FXVector.size(), 9);
 	EXPECT_FLOAT_EQ(FXVector[6]->Second->High, 2901.36);
 	EXPECT_FLOAT_EQ(FXVector[6]->Second->Low, 2879.69);
@@ -202,10 +208,10 @@ TEST(ALL_UNIT, 600000_Can_Find_ALL_From_FXVector) {
 	TestDataBag* bag = LoadData("..\\testdata\\600000.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
-	int first_index = Find_First_FX_Index_FromALL(FXVector);
-	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(first_index, FXVector);
+	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
+	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.SecondFX_Index, FXVector);
 	/*ISSUE Between index 2 and 3*/
-	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(first_index, FXVector);
+	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(result.SecondFX_Index, FXVector);
 	int second_index = next_result1.SecondFX_Index;
 	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(second_index, FXVector);
 	int third_index = next_result2.SecondFX_Index;
@@ -213,3 +219,10 @@ TEST(ALL_UNIT, 600000_Can_Find_ALL_From_FXVector) {
 	//EXPECT_EQ(FXVector.size(), 9);
 }
 
+
+TEST(ALL_UNIT, 600000_New_Can_Find_ALL_From_FXVector) {
+	TestDataBag* bag = LoadData("..\\testdata\\600000.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	BI* first_bi=FindFirstBI(FXVector);
+}
