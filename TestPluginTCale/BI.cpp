@@ -209,3 +209,65 @@ __declspec(dllexport) BI* FindFirstBI(vector<FXing*> FXVector)
 	first_bi->SecondFX = result.SecondFX;
 	return first_bi;
 }
+
+bool DingDiDuLi(FXing* FxDing, FXing* FxDi)
+{
+	bool dingDuLi = FxDing->Second->Low > FxDi->First->High&&
+		FxDing->Second->Low > FxDi->Second->High&&
+		FxDing->Second->Low > FxDi->Second->High;
+
+	bool diDuLi = FxDi->Second->High < FxDing->First->Low &&
+		FxDi->Second->High < FxDing->Second->Low &&
+		FxDi->Second->High < FxDing->Third->Low;
+	return dingDuLi && diDuLi;
+}
+
+__declspec(dllexport) FXSearchResult Finx_Next_FX_FromAll(FXSearchResult result1, vector<FXing*> FXVector)
+{
+	FXSearchResult result2;
+	result2.FirstFX_Confirmed = true;
+	int first_index = result1.FirstFX_Index;
+	int second_index = result1.SecondFX_Index;
+	for (int i = second_index + 1; i < FXVector.size() - 1; i++) {
+		/*¶¥½Ó¶¥*/
+		if (result1.SecondFX->FxType == FXing::Ding &&
+			FXVector[i]->FxType == FXing::Ding) {
+			if (FXVector[i]->Second->High > result1.SecondFX->Second->High) {
+				result1.SecondFX = FXVector[i];
+				result1.SecondFX_Index = i;
+				return result1;
+			}
+		}
+		/*µ×½Óµ×*/
+		if (result1.SecondFX->FxType == FXing::Di &&
+			FXVector[i]->FxType == FXing::Di) {
+			if (FXVector[i]->Second->Low < result1.SecondFX->Second->Low) {
+				result1.SecondFX = FXVector[i];
+				result1.SecondFX_Index = i;
+				return result1;
+			}
+		}
+		if (result1.SecondFX->FxType == FXing::Ding &&
+			FXVector[i]->FxType == FXing::Di) {
+			if (DingDiDuLi(result1.SecondFX, FXVector[i])) {
+				result2.FirstFX = result1.SecondFX;
+				result2.FirstFX_Index = result1.SecondFX_Index;
+				result2.SecondFX = FXVector[i];
+				result2.SecondFX_Index = i;
+				return result2;
+			}
+		}
+		if (result1.SecondFX->FxType == FXing::Di &&
+			FXVector[i]->FxType == FXing::Ding) {
+			if (DingDiDuLi(FXVector[i], result1.SecondFX)) {
+				result2.FirstFX = result1.SecondFX;
+				result2.FirstFX_Index = result1.SecondFX_Index;
+				result2.SecondFX = FXVector[i];
+				result2.SecondFX_Index = i;
+				return result2;
+			}
+		}
+	}
+	result2.FirstFX_Confirmed = false;
+	return result2;
+}
