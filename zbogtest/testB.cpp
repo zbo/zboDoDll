@@ -225,4 +225,6 @@ TEST(ALL_UNIT, 600000_New_Can_Find_ALL_From_FXVector) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	BI* first_bi=FindFirstBI(FXVector);
+	EXPECT_EQ(first_bi->FirstFX->FxType, FXing::Ding);
+	EXPECT_EQ(first_bi->SecondFX->FxType, FXing::Di);
 }
