@@ -46,8 +46,12 @@ public:
 
 class BI {
 public:
+	enum FANGXIANG { SHANG, XIA };
 	FXing* FirstFX;
 	FXing* SecondFX;
+	FANGXIANG BITpye;
+	int Start;
+	int End;
 };
 
 struct FXSearchResult {

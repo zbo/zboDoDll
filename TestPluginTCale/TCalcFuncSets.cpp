@@ -14,9 +14,16 @@ using namespace std;
 
 void TestPlugin1(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc)
 {
+	//找出笔
 	vector<KXian*> KXianVector = GenerateKXianVector(DataLen, pfOUT, pfINa, pfINb, pfINc);
-	//归类法找出所有可能的分型
+	OutputDebugInfo(KXianVector);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	FXVector = AdjustGapInFX(FXVector);
+	FXSearchResult result = Find_First_FX_FromALL(FXVector);
+	vector<int> Final_FXVector_Index = Generate_Final_Index(result, FXVector);
+	vector<FXing*> Final_FXVector = Generate_Final_FX(Final_FXVector_Index, FXVector);
+	//处理笔
+
 	FillinPOutDefault(pfOUT, DataLen);
 	FillinPOut(pfOUT, FXVector);
 }
@@ -24,7 +31,6 @@ void TestPlugin1(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 
 void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc)
 {
-	ofstream outfile("out.txt",ios::app);	
 	vector<KXian*> KXianVector = GenerateKXianVector(DataLen,pfOUT,pfINa,pfINb,pfINc);
 	OutputDebugInfo(KXianVector);
 	//归类法找出所有可能的分型
@@ -37,9 +43,6 @@ void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	//vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.FirstFX_Index, FXVector);
 	FillinPOutDefault(pfOUT,DataLen);
 	FillinPOut(pfOUT, Final_FXVector);
-	outfile<<"------------------------------------------------"<<'\n';
-	outfile.close();
-	
 }
 
 
