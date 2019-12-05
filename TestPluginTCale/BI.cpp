@@ -104,7 +104,9 @@ __declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> 
 	result.FirstFX_Index = 0;
 	result.SecondFX_Index = 0;
 	FXSearchResult tempResultDing;
+	tempResultDing.FirstFX_Confirmed = true;
 	FXSearchResult tempResultDi;
+	tempResultDi.FirstFX_Confirmed = true;
 	if (FXVector.size() == 0) return result;
 	FXing* tempFirstDing = nullptr;
 	FXing* tempFirstDi = nullptr;
@@ -194,6 +196,7 @@ __declspec(dllexport) FXSearchResult Find_First_FX_Index_FromALL(vector<FXing*> 
 	else {
 		result.FirstFX_Index = 0;
 		result.SecondFX_Index = 0;
+		result.FirstFX_Confirmed = false;
 	}
 	return result;
 }

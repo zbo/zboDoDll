@@ -209,14 +209,73 @@ TEST(ALL_UNIT, 600000_Can_Find_ALL_From_FXVector) {
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	FXSearchResult result = Find_First_FX_Index_FromALL(FXVector);
-	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.SecondFX_Index, FXVector);
+	vector<FXing*> Final_FXVector = Find_ALL_FX_FromAll(result.FirstFX_Index, FXVector);
 	/*ISSUE Between index 2 and 3*/
 	FXSearchResult next_result1 = Finx_Next_FX_Index_FromAll(result.SecondFX_Index, FXVector);
-	int second_index = next_result1.SecondFX_Index;
+	int second_index = next_result1.FirstFX_Index;
 	FXSearchResult next_result2 = Finx_Next_FX_Index_FromAll(second_index, FXVector);
-	int third_index = next_result2.SecondFX_Index;
+	int third_index = next_result2.FirstFX_Index;
 	FXSearchResult next_result3 = Finx_Next_FX_Index_FromAll(third_index, FXVector);
 	//EXPECT_EQ(FXVector.size(), 9);
+}
+bool DingDiDuLi(FXing* FxDing, FXing* FxDi)
+{
+	bool dingDuLi = FxDing->Second->Low > FxDi->First->High&&
+		FxDing->Second->Low > FxDi->Second->High&&
+		FxDing->Second->Low > FxDi->Second->High;
+
+	bool diDuLi = FxDi->Second->High < FxDing->First->Low&&
+		FxDi->Second->High < FxDing->Second->Low &&
+		FxDi->Second->High < FxDing->Third->Low;
+	return dingDuLi && diDuLi;
+}
+
+FXSearchResult Finx_Next_FX_FromAll(FXSearchResult result1, vector<FXing*> FXVector)
+{
+	FXSearchResult result2;
+	result2.FirstFX_Confirmed = true;
+	int first_index = result1.FirstFX_Index;
+	int second_index = result1.SecondFX_Index;
+	for (int i = second_index + 1; i < FXVector.size() - 1; i++) {
+		/*¶¥½Ó¶¥*/
+		if (result1.SecondFX->FxType == FXing::Ding &&
+			FXVector[i]->FxType == FXing::Ding) {
+			if (FXVector[i]->Second->High > result1.SecondFX->Second->High) {
+				result1.SecondFX = FXVector[i];
+				result1.SecondFX_Index = i;
+				return result1;
+			}}
+		/*µ×½Óµ×*/
+		if (result1.SecondFX->FxType == FXing::Di &&
+			FXVector[i]->FxType==FXing::Di) {
+			if (FXVector[i]->Second->Low < result1.SecondFX->Second->Low) {
+				result1.SecondFX = FXVector[i];
+				result1.SecondFX_Index = i;
+				return result1;
+			}}
+		if (result1.SecondFX->FxType == FXing::Ding &&
+			FXVector[i]->FxType == FXing::Di) {
+			if (DingDiDuLi(result1.SecondFX,FXVector[i])) {
+				result2.FirstFX = result1.SecondFX;
+				result2.FirstFX_Index = result1.SecondFX_Index;
+				result2.SecondFX = FXVector[i];
+				result2.SecondFX_Index = i;
+				return result2;
+			}
+		}
+		if (result1.SecondFX->FxType == FXing::Di &&
+			FXVector[i]->FxType == FXing::Ding) {
+			if (DingDiDuLi(FXVector[i],result1.SecondFX)) {
+				result2.FirstFX = result1.SecondFX;
+				result2.FirstFX_Index = result1.SecondFX_Index;
+				result2.SecondFX = FXVector[i];
+				result2.SecondFX_Index = i;
+				return result2;
+			}
+		}
+	}
+	result2.FirstFX_Confirmed = false;
+	return result2;
 }
 
 
@@ -227,4 +286,32 @@ TEST(ALL_UNIT, 600000_New_Can_Find_ALL_From_FXVector) {
 	FXSearchResult result1= Find_First_FX_Index_FromALL(FXVector);
 	EXPECT_EQ(result1.FirstFX->FxType, FXing::Ding);
 	EXPECT_EQ(result1.SecondFX->FxType, FXing::Di);
+	EXPECT_EQ(result1.FirstFX_Index, 2);
+	EXPECT_EQ(result1.SecondFX_Index, 3);
+	vector<int> final_FX_Index;
+	final_FX_Index.push_back(result1.FirstFX_Index);
+	final_FX_Index.push_back(result1.SecondFX_Index);
+	while (result1.FirstFX_Confirmed) {
+		FXSearchResult result2 = Finx_Next_FX_FromAll(result1, FXVector);
+		result1 = result2;
+		if (result1.FirstFX_Confirmed == false) { break; }
+		int kept_second = final_FX_Index[final_FX_Index.size() - 1];
+		int kept_first = final_FX_Index[final_FX_Index.size() - 2];
+		if (kept_first == result2.FirstFX_Index) {
+			final_FX_Index[final_FX_Index.size() - 1] = result2.SecondFX_Index;
+		}
+		else if (kept_second == result2.FirstFX_Index) {
+			final_FX_Index.push_back(result2.SecondFX_Index);
+		}
+		else { 
+			throw std::logic_error("The method or operation is not implemented."); 
+		}
+	}
+	EXPECT_EQ(1, 1);
+	/*FXSearchResult result2 = Finx_Next_FX_FromAll(result1,FXVector);
+
+	FXSearchResult result3 = Finx_Next_FX_FromAll(result2, FXVector);
+
+	FXSearchResult result4 = Finx_Next_FX_FromAll(result3, FXVector);*/
+
 }
