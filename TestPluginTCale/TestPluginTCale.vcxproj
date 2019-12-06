@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="BI.cpp" />
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="DUAN.cpp" />
     <ClCompile Include="FindApp.cpp" />
     <ClCompile Include="FX.cpp" />
     <ClCompile Include="SearchApp.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="BI.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DUAN.h" />
     <ClInclude Include="FindApp.h" />
     <ClInclude Include="FX.h" />
     <ClInclude Include="PluginTCalcFunc.h" />

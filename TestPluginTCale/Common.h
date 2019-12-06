@@ -9,7 +9,8 @@ using namespace std;
 vector<string> mySplit(const string& str, string sp_string);
 BaoHanRela BaoHan(KXian* firstK, KXian* secondK);
 void OutputDebugInfo(std::vector<KXian *> KXianVector);
-void FillinPOut(float* pfOUT, vector<FXing *> FXVector);
+void FillinPOutBI(float* pfOUT, vector<FXing *> FXVector);
+void FillinPOutDUAN(float* pfOUT, vector<TZXLFXing*> Ordered_TZXL_Vector);
 void FillinPOutDefault(float* pfOUT, int DataLen);
 void PrintFxVector(vector<FXing *> FXVector_Clean);
 

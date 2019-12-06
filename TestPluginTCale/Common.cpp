@@ -55,7 +55,7 @@ void OutputDebugInfo(std::vector<KXian *> KXianVector)
 	debug_file.close();
 }
 
-void FillinPOut(float* pfOUT, vector<FXing *> FXVector)
+void FillinPOutBI(float* pfOUT, vector<FXing *> FXVector)
 {
 	for(int i=0;i<FXVector.size();i++){
 		int index = FXVector[i]->Second->i;
@@ -63,6 +63,20 @@ void FillinPOut(float* pfOUT, vector<FXing *> FXVector)
 		pfOUT[index]=fxtype;
 	}
 }
+
+void FillinPOutDUAN(float* pfOUT, vector<TZXLFXing*> Ordered_TZXL_Vector)
+{
+	for (int i = 0; i < Ordered_TZXL_Vector.size(); i++) {
+		int index = Ordered_TZXL_Vector[i]->Second->Start;
+		if (Ordered_TZXL_Vector[i]->Type == TZXLFXing::DI) {
+			pfOUT[index] = -1;
+		}
+		else {
+			pfOUT[index] = 1;
+		}
+	}
+}
+
 __declspec(dllexport) void FillinPOutDefault(float* pfOUT, int DataLen)
 {
 	for(int i=0;i<DataLen;i++){
