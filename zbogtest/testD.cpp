@@ -38,5 +38,9 @@ TEST(ALL_DUAN, 002949_Can_Find_DUAN) {
 	EXPECT_EQ(TZXL_Xia_Vector.size(), 1);
 	vector<TZXLFXing*> Ordered_TZXL_Vector = Ordered_TZXL_FX(TZXL_Shang_Vector, TZXL_Xia_Vector);
 	EXPECT_EQ(Ordered_TZXL_Vector.size(), 2);
-
+	EXPECT_EQ(Ordered_TZXL_Vector[0]->Type, TZXLFXing::DI);
+	EXPECT_EQ(Ordered_TZXL_Vector[1]->Type, TZXLFXing::DING);
+	EXPECT_EQ(Ordered_TZXL_Vector.size(), 2);
+	EXPECT_FLOAT_EQ(Ordered_TZXL_Vector[0]->Second->Low, 18.8);
+	EXPECT_FLOAT_EQ(Ordered_TZXL_Vector[1]->Second->High, 34.6);
 }
