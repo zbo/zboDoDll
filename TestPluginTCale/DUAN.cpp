@@ -180,3 +180,92 @@ __declspec(dllexport) vector<TZXLFXing*> Generate_TZXL_Xia_FX_Vector(vector<BI*>
 	} while (TZ_FX_Xia->Valid);
 	return TZXL_Xia_Vector;
 }
+
+__declspec(dllexport) BaoHanRela BaoHanTZXL(BI* firstBI, BI* secondBI) {
+	BaoHanRela rela;
+	if (firstBI->High >= secondBI->High && firstBI->Low <= secondBI->Low) {
+		rela.isBaoHan = true;
+		rela.BHType = BaoHanRela::QianDa;
+		return rela;
+	}
+	else if (firstBI->High <= secondBI->High && firstBI->Low >= secondBI->Low) {
+		rela.isBaoHan = true;
+		rela.BHType = BaoHanRela::HouDa;
+		return rela;
+	}
+	else {
+		rela.isBaoHan = false;
+		rela.BHType = BaoHanRela::No;
+		return rela;
+	}
+}
+
+
+__declspec(dllexport) vector<BI*> ProcessBaoHanTZXL(vector<BI*> BIVector_Clean, BI* BiIn, BaoHanRela baoHanRela, TZXLFXing::TZXLFXingType Needs)
+{
+	BI* Bi = new BI;
+	if (Needs == TZXLFXing::DING) {
+		if (baoHanRela.BHType == BaoHanRela::QianDa) {
+			Bi->High = BIVector_Clean[BIVector_Clean.size() - 1]->High;
+			Bi->Low = BiIn->Low;
+			Bi->Start = BIVector_Clean[BIVector_Clean.size() - 1]->Start;
+			Bi->End = BiIn->End;
+		}
+		else {
+			Bi->High = BiIn->High;
+			Bi->Low = BIVector_Clean[BIVector_Clean.size() - 1]->Low;
+			Bi->Start = BiIn->Start;
+			Bi->End = BIVector_Clean[BIVector_Clean.size() - 1]->End;
+		}
+	}
+	else {
+		if (baoHanRela.BHType == BaoHanRela::QianDa) {
+			Bi->High = BiIn->High;
+			Bi->Low = BIVector_Clean[BIVector_Clean.size() - 1]->Low;
+			Bi->Start = BIVector_Clean[BIVector_Clean.size() - 1]->Start;
+			Bi->End = BiIn->End;
+		}
+		else {
+			Bi->High = BIVector_Clean[BIVector_Clean.size() - 1]->High;;
+			Bi->Low = BiIn->Low;
+			Bi->Start = BiIn->Start;
+			Bi->End= BIVector_Clean[BIVector_Clean.size() - 1]->End;
+		}
+	}
+	//包含完成，最后一个必然失效，但是包含结果还需继续和再前一个处理包含
+	BIVector_Clean.pop_back();
+	if (BIVector_Clean.size() == 0) {
+		BIVector_Clean.push_back(Bi);
+	}
+	else {
+		BaoHanRela rela = BaoHanTZXL(BIVector_Clean[BIVector_Clean.size() - 1], Bi);
+		if (rela.isBaoHan == false) {
+			BIVector_Clean.push_back(Bi);
+		}
+		else {
+			BIVector_Clean = ProcessBaoHanTZXL(BIVector_Clean, Bi, rela, Needs);
+		}
+	}
+	return BIVector_Clean;
+}
+
+__declspec(dllexport) vector<TZXLFXing*> Generate_TZXL_BH_FX_Vector(vector<BI*> BIVector, TZXLFXing::TZXLFXingType Needs)
+{
+	//Shang Needs DI, Xia Needs DING
+	vector<BI*> BIVector_Clean;
+	BIVector_Clean.push_back(BIVector[0]);
+	for (int i = 1; i < BIVector.size(); i++) {
+		int temp_lenght = BIVector_Clean.size();
+		BaoHanRela baoHanRela = BaoHanTZXL(BIVector_Clean[temp_lenght - 1], BIVector[i]);
+		if (baoHanRela.isBaoHan) {
+			BIVector_Clean = ProcessBaoHanTZXL(BIVector_Clean, BIVector[i], baoHanRela, Needs);
+		}
+		else {
+			BIVector_Clean.push_back(BIVector[i]);
+		}
+	}
+	if(Needs==TZXLFXing::DING)
+		return  Generate_TZXL_Xia_FX_Vector(BIVector_Clean);
+	else
+		return  Generate_TZXL_Shang_FX_Vector(BIVector_Clean);
+}

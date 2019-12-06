@@ -17,6 +17,9 @@ TZXLFXing* Find_TZXL_DING_FX(vector<BI*> TZXL_Xia, int from);
 vector<TZXLFXing*> Ordered_TZXL_FX(vector<TZXLFXing*> TZXL_Shang_Vector, vector<TZXLFXing*> TZXL_Xia_Vector);
 vector<TZXLFXing*> Generate_TZXL_Shang_FX_Vector(vector<BI*> TZXL_Shang);
 vector<TZXLFXing*> Generate_TZXL_Xia_FX_Vector(vector<BI*> TZXL_Xia);
+vector<TZXLFXing*> Generate_TZXL_BH_FX_Vector(vector<BI*> BIVector, TZXLFXing::TZXLFXingType Needs);
+vector<BI*> ProcessBaoHanTZXL(vector<BI*> BIVector_Clean, BI* BiIn, BaoHanRela baoHanRela, TZXLFXing::TZXLFXingType Needs);
+BaoHanRela BaoHanTZXL(BI* firstBI, BI* secondBI);
 
 
 

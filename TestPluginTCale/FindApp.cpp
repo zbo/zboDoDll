@@ -211,7 +211,6 @@ vector<KXian*> ProcessBaoHan(vector<KXian*> KXVClean, KXian* KXianIn, BaoHanRela
 		}
 	}
 	return KXVClean;
-	
 }
 
 __declspec(dllexport) vector<FXing *> Find_Ding_FX_BH(std::vector<KXian *> KXianVector)
@@ -238,7 +237,7 @@ __declspec(dllexport) vector<FXing *> Find_Di_FX_BH(std::vector<KXian *> KXianVe
 	vector<KXian*> KXianVector_Clean;
 	vector<FXing*> FXingVector;
 	KXianVector_Clean.push_back(KXianVector[0]);
-	for(int i=1; i<KXianVector.size()-1;i++){
+	for(int i=1; i<KXianVector.size();i++){
 		int temp_lenght=KXianVector_Clean.size();
 		BaoHanRela baoHanRela = BaoHan(KXianVector_Clean[temp_lenght-1],KXianVector[i]);
 		if(baoHanRela.isBaoHan){

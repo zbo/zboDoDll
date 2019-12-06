@@ -28,10 +28,17 @@ void TestPlugin1(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	vector<BI*> BIVector = GenerateBIVector(Final_FXVector);
 	vector<BI*> TZXL_Shang = GenerateTZXL_Shang(BIVector);
 	vector<TZXLFXing*> TZXL_Shang_Vector = Generate_TZXL_Shang_FX_Vector(TZXL_Shang);
+	vector<TZXLFXing*> TZXL_BH_Shang_Vector = Generate_TZXL_BH_FX_Vector(TZXL_Shang, TZXLFXing::DI);
 	vector<BI*> TZXL_Xia = GenerateTZXL_Xia(BIVector);
 	vector<TZXLFXing*> TZXL_Xia_Vector = Generate_TZXL_Xia_FX_Vector(TZXL_Xia);
-	vector<TZXLFXing*> Ordered_TZXL_Vector = Ordered_TZXL_FX(TZXL_Shang_Vector, TZXL_Xia_Vector);
+	vector<TZXLFXing*> TZXL_BH_Xia_Vector = Generate_TZXL_BH_FX_Vector(TZXL_Xia, TZXLFXing::DING);
 
+	vector<TZXLFXing*> Vector1 = Ordered_TZXL_FX(TZXL_Shang_Vector, TZXL_BH_Shang_Vector);
+	vector<TZXLFXing*> Vector2 = Ordered_TZXL_FX(TZXL_Xia_Vector, TZXL_BH_Xia_Vector);
+	vector<TZXLFXing*> Ordered_TZXL_Vector = Ordered_TZXL_FX(Vector1, Vector2);
+	ofstream out_file("out.txt", ios::trunc);
+	out_file << "Ordered_TZXL_FX:" << Ordered_TZXL_Vector.size()<< '\n';
+	out_file.close();
 	//填充显示数据
 	FillinPOutDefault(pfOUT, DataLen);
 	FillinPOutDUAN(pfOUT, Ordered_TZXL_Vector);
@@ -41,7 +48,7 @@ void TestPlugin1(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc)
 {
 	vector<KXian*> KXianVector = GenerateKXianVector(DataLen,pfOUT,pfINa,pfINb,pfINc);
-	OutputDebugInfo(KXianVector);
+	//OutputDebugInfo(KXianVector);
 	//归类法找出所有可能的分型
 	vector<FXing*> FXVector = Find_All_FX(KXianVector);
 	FXVector = AdjustGapInFX(FXVector);
