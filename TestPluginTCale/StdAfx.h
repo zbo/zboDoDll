@@ -56,6 +56,17 @@ public:
 	int End;
 };
 
+class TZXLFXing{
+public:
+	enum TZXLFXingType {DING, DI};
+	BI* First;
+	BI* Second;
+	BI* Third;
+	bool Valid;
+	int Search_Index;
+	TZXLFXingType Type;
+};
+
 struct FXSearchResult {
 	FXing* FirstFX;
 	FXing* SecondFX;
