@@ -129,12 +129,10 @@ __declspec(dllexport) vector<TZXLFXing*> Ordered_TZXL_FX(vector<TZXLFXing*> TZXL
 		if (TZXL_Shang_Vector.size() == 0 && TZXL_Xia_Vector.size() != 0) {
 			FX1 = TZXL_Xia_Vector[0];
 			TZXL_Xia_Vector.erase(std::begin(TZXL_Xia_Vector));
-			Ordered_TZXL_Vector.push_back(FX1);
 		}
 		if (TZXL_Shang_Vector.size() != 0 && TZXL_Xia_Vector.size() == 0) {
 			FX1 = TZXL_Shang_Vector[0];
 			TZXL_Shang_Vector.erase(std::begin(TZXL_Shang_Vector));
-			Ordered_TZXL_Vector.push_back(FX1);
 		}
 		if (TZXL_Shang_Vector.size() != 0 && TZXL_Xia_Vector.size() != 0) {
 			bool s = TZXL_Shang_Vector[0]->Second->Start < TZXL_Xia_Vector[0]->Second->Start;
@@ -146,8 +144,14 @@ __declspec(dllexport) vector<TZXLFXing*> Ordered_TZXL_FX(vector<TZXLFXing*> TZXL
 				FX1 = TZXL_Xia_Vector[0];
 				TZXL_Xia_Vector.erase(std::begin(TZXL_Xia_Vector));
 			}
-			Ordered_TZXL_Vector.push_back(FX1);
 		}
+		bool exist = false;
+		for (int i = 0; i < Ordered_TZXL_Vector.size(); i++) {
+			if (Ordered_TZXL_Vector[i]->Second->Start == FX1->Second->Start)
+				exist = true;
+		}
+		if(!exist)
+			Ordered_TZXL_Vector.push_back(FX1);
 	}
 	return Ordered_TZXL_Vector;
 }
