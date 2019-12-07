@@ -36,6 +36,7 @@ void TestPlugin1(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	vector<TZXLFXing*> Vector1 = Ordered_TZXL_FX(TZXL_Shang_Vector, TZXL_BH_Shang_Vector);
 	vector<TZXLFXing*> Vector2 = Ordered_TZXL_FX(TZXL_Xia_Vector, TZXL_BH_Xia_Vector);
 	vector<TZXLFXing*> Ordered_TZXL_Vector = Ordered_TZXL_FX(Vector1, Vector2);
+	Ordered_TZXL_Vector = Add_First_TZXL_FX(Ordered_TZXL_Vector, BIVector);
 	ofstream out_file("out.txt", ios::trunc);
 	out_file << "Ordered_TZXL_FX:" << Ordered_TZXL_Vector.size()<< '\n';
 	out_file.close();

@@ -66,11 +66,12 @@ TEST(ALL_DUAN, 002947_Can_Find_DUAN) {
 }
 
 TEST(ALL_DUAN, 603386_Can_Find_DUAN) {
+
 	TestDataBag* bag = LoadData("..\\testdata\\603386.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	vector<FXing*> Final_FXVector = LoadFX(KXianVector);
 	vector<BI*> BIVector = GenerateBIVector(Final_FXVector);
-	EXPECT_EQ(10, BIVector.size());
+	EXPECT_EQ(36, BIVector.size());
 	vector<BI*> TZXL_Shang = GenerateTZXL_Shang(BIVector);
 	vector<TZXLFXing*> TZXL_Shang_Vector = Generate_TZXL_Shang_FX_Vector(TZXL_Shang);
 	vector<TZXLFXing*> TZXL_BH_Shang_Vector = Generate_TZXL_BH_FX_Vector(TZXL_Shang, TZXLFXing::DI);
@@ -82,4 +83,5 @@ TEST(ALL_DUAN, 603386_Can_Find_DUAN) {
 	vector<TZXLFXing*> Vector1 = Ordered_TZXL_FX(TZXL_Shang_Vector, TZXL_BH_Shang_Vector);
 	vector<TZXLFXing*> Vector2 = Ordered_TZXL_FX(TZXL_Xia_Vector, TZXL_BH_Xia_Vector);
 	vector<TZXLFXing*> Ordered_TZXL_Vector = Ordered_TZXL_FX(Vector1, Vector2);
+	Ordered_TZXL_Vector = Add_First_TZXL_FX(Ordered_TZXL_Vector,BIVector);
 }

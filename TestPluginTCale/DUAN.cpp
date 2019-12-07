@@ -273,3 +273,32 @@ __declspec(dllexport) vector<TZXLFXing*> Generate_TZXL_BH_FX_Vector(vector<BI*> 
 	else
 		return  Generate_TZXL_Shang_FX_Vector(BIVector_Clean);
 }
+
+/*
+为了画出第一段，给第一笔开始处加一个TZXLFX
+前提是第一个特征序列极点前至少有两笔
+*/
+__declspec(dllexport) vector<TZXLFXing*> Add_First_TZXL_FX(vector<TZXLFXing*> Ordered_TZXL_Vector, vector<BI*> BIVector)
+{
+	if (Ordered_TZXL_Vector.size() == 0) return Ordered_TZXL_Vector;
+	if (BIVector.size() <= 3) return Ordered_TZXL_Vector;
+	TZXLFXing* tzxlfx = Ordered_TZXL_Vector[0];
+	int tz_start = tzxlfx->Second->Start;
+	if (BIVector[2]->Start >= tz_start) return Ordered_TZXL_Vector;
+	TZXLFXing* newTZXLFX = new TZXLFXing;
+	if (tzxlfx->Type == TZXLFXing::DING) {
+		//需要从前面找一个上的笔
+		BI* Shang = BIVector[0]->BITpye == BI::SHANG ? BIVector[0] : BIVector[1];
+		newTZXLFX->Second = Shang;
+		newTZXLFX->Type = TZXLFXing::DI;
+		newTZXLFX->Valid = false;
+	}
+	else {
+		BI* Xia = BIVector[0]->BITpye == BI::XIA ? BIVector[0] : BIVector[1];
+		newTZXLFX->Second = Xia;
+		newTZXLFX->Type = TZXLFXing::DING;
+		newTZXLFX->Valid = false;
+	}
+	Ordered_TZXL_Vector.insert(Ordered_TZXL_Vector.begin(), newTZXLFX);
+	return Ordered_TZXL_Vector;
+}
