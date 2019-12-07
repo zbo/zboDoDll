@@ -302,3 +302,32 @@ __declspec(dllexport) vector<TZXLFXing*> Add_First_TZXL_FX(vector<TZXLFXing*> Or
 	Ordered_TZXL_Vector.insert(Ordered_TZXL_Vector.begin(), newTZXLFX);
 	return Ordered_TZXL_Vector;
 }
+
+__declspec(dllexport) SearchDuan* FindFirstDuan(vector<BI*> BIVector)
+{
+	SearchDuan* duan = new SearchDuan;
+	duan->Valid = false;
+	for (int i = 0; i < BIVector.size() - 2; i++) {
+		BI* first_bi = BIVector[i];
+		BI* second_bi = BIVector[i + 2];
+		if (first_bi->BITpye == BI::SHANG) {
+			if (first_bi->Low < second_bi->Low && first_bi->High < second_bi->High) {
+				duan->Valid = true;
+				duan->Start = first_bi;
+				duan->End = second_bi;
+				duan->Type = SearchDuan::Shang;
+				return duan;
+			}
+		}
+		else {
+			if (first_bi->Low > second_bi->Low&& first_bi->High > second_bi->High) {
+				duan->Valid = true;
+				duan->Start = first_bi;
+				duan->End = second_bi;
+				duan->Type = SearchDuan::Xia;
+				return duan;
+			}
+		}
+	}
+	return duan;
+}

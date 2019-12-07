@@ -62,12 +62,37 @@ void TestPlugin2(int DataLen,float* pfOUT,float* pfINa,float* pfINb,float* pfINc
 	FillinPOutBI(pfOUT, Final_FXVector);
 }
 
+void TestPlugin3(int DataLen, float* pfOUT, float* pfINa, float* pfINb, float* pfINc)
+{
+	vector<KXian*> KXianVector = GenerateKXianVector(DataLen, pfOUT, pfINa, pfINb, pfINc);
+	vector<FXing*> FXVector = Find_All_FX(KXianVector);
+	FXVector = AdjustGapInFX(FXVector);
+	FXSearchResult result = Find_First_FX_FromALL(FXVector);
+	vector<int> Final_FXVector_Index = Generate_Final_Index(result, FXVector);
+	vector<FXing*> Final_FXVector = Generate_Final_FX(Final_FXVector_Index, FXVector);
+
+	vector<BI*> BIVector = GenerateBIVector(Final_FXVector);
+	SearchDuan* FirstDuan = FindFirstDuan(BIVector);
+	vector<SearchDuan*> DuanVector;
+	DuanVector.push_back(FirstDuan);
+
+	FillinPOutDefault(pfOUT, DataLen);
+	FillinPOutDUAN2(pfOUT, DuanVector);
+}
+
+void TestPlugin4(int DataLen, float* pfOUT, float* pfINa, float* pfINb, float* pfINc) {
+	for (int i = 0; i < DataLen; i++) {
+		pfOUT[i] = pfINa[i];
+	}
+}
 
 //¼ÓÔØµÄº¯Êý
 PluginTCalcFuncInfo g_CalcFuncSets[] = 
 {
 	{1,(pPluginFUNC)&TestPlugin1},
 	{2,(pPluginFUNC)&TestPlugin2},
+	{3,(pPluginFUNC)&TestPlugin3},
+	{4,(pPluginFUNC)&TestPlugin4},
 	{0,NULL},
 };
 

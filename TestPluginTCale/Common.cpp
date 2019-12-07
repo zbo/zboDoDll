@@ -77,6 +77,24 @@ void FillinPOutDUAN(float* pfOUT, vector<TZXLFXing*> Ordered_TZXL_Vector)
 	}
 }
 
+void FillinPOutDUAN2(float* pfOUT, vector<SearchDuan*> SearchDVector)
+{
+	int first_index = 0;
+	int second_index = 0;
+	for (int i = 0; i < SearchDVector.size(); i++) {
+		first_index = SearchDVector[i]->Start->Start;
+		second_index = SearchDVector[i]->End->End;
+		if (SearchDVector[i]->Type == SearchDuan::Shang) {
+			pfOUT[first_index] = -1;
+			pfOUT[second_index] = 1;
+		}
+		else {
+			pfOUT[first_index] = 1;
+			pfOUT[second_index] = -1;
+		}
+	}
+}
+
 __declspec(dllexport) void FillinPOutDefault(float* pfOUT, int DataLen)
 {
 	for(int i=0;i<DataLen;i++){

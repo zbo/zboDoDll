@@ -21,7 +21,7 @@ vector<TZXLFXing*> Generate_TZXL_BH_FX_Vector(vector<BI*> BIVector, TZXLFXing::T
 vector<BI*> ProcessBaoHanTZXL(vector<BI*> BIVector_Clean, BI* BiIn, BaoHanRela baoHanRela, TZXLFXing::TZXLFXingType Needs);
 BaoHanRela BaoHanTZXL(BI* firstBI, BI* secondBI);
 vector<TZXLFXing*> Add_First_TZXL_FX(vector<TZXLFXing*> Ordered_TZXL_Vector, vector<BI*> BIVector);
-
+SearchDuan* FindFirstDuan(vector<BI*> BIVector);
 
 
 

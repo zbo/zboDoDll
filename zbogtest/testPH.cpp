@@ -21,10 +21,14 @@ vector<FXing*> LoadFXPH(vector<KXian*>& KXianVector)
 	return Final_FXVector;
 }
 
-TEST(ALL_POHUAI, 002947_PH_DUAN) {
-	TestDataBag* bag = LoadData("..\\testdata\\002947.txt");
+
+
+TEST(ALL_POHUAI, 603388_BH_DUAN) {
+	TestDataBag* bag = LoadData("..\\testdata\\603388.txt");
 	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
 	vector<FXing*> Final_FXVector = LoadFXPH(KXianVector);
 	vector<BI*> BIVector = GenerateBIVector(Final_FXVector);
-	EXPECT_EQ(10, BIVector.size());
+	SearchDuan* FirstDuan = FindFirstDuan(BIVector);
+	vector<SearchDuan*> DuanVector;
+	DuanVector.push_back(FirstDuan);
 }

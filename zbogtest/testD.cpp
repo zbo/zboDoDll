@@ -85,3 +85,50 @@ TEST(ALL_DUAN, 603386_Can_Find_DUAN) {
 	vector<TZXLFXing*> Ordered_TZXL_Vector = Ordered_TZXL_FX(Vector1, Vector2);
 	Ordered_TZXL_Vector = Add_First_TZXL_FX(Ordered_TZXL_Vector,BIVector);
 }
+
+
+vector<TZXLFXing*> RemoveDuplicated(vector<TZXLFXing*> TZXL_BH_Vector, vector<TZXLFXing*> TZXL_Vector)
+{
+	vector<TZXLFXing*> removed;
+	for (int i = 0; i < TZXL_BH_Vector.size(); i++) {
+		bool exist = false;
+		for (int j = 0; j < TZXL_Vector.size(); j++) {
+			if (TZXL_BH_Vector[i]->First->Start == TZXL_Vector[j]->First->Start &&
+				TZXL_BH_Vector[i]->First->End == TZXL_Vector[j]->First->End &&
+				TZXL_BH_Vector[i]->Third->Start == TZXL_Vector[j]->Third->Start &&
+				TZXL_BH_Vector[i]->Third->End == TZXL_Vector[j]->Third->End) {
+				exist = true;
+				break;
+			}
+		}
+		if (!exist) {
+			removed.push_back(TZXL_BH_Vector[i]);
+		}
+	}
+	return removed;
+}
+
+TEST(ALL_DUAN, 603880_Can_Find_DUAN) {
+
+	TestDataBag* bag = LoadData("..\\testdata\\603880.txt");
+	vector<KXian*> KXianVector = GenerateKXianVector(bag->DataLength, bag->out, bag->pfINa, bag->pfINb, bag->pfINc);
+	vector<FXing*> Final_FXVector = LoadFX(KXianVector);
+	vector<BI*> BIVector = GenerateBIVector(Final_FXVector);
+	EXPECT_EQ(29, BIVector.size());
+	vector<BI*> TZXL_Shang = GenerateTZXL_Shang(BIVector);
+	vector<TZXLFXing*> TZXL_Shang_Vector = Generate_TZXL_Shang_FX_Vector(TZXL_Shang);
+	vector<TZXLFXing*> TZXL_BH_Shang_Vector = Generate_TZXL_BH_FX_Vector(TZXL_Shang, TZXLFXing::DI);
+	TZXL_BH_Shang_Vector = RemoveDuplicated(TZXL_BH_Shang_Vector,TZXL_Shang_Vector);
+
+	vector<BI*> TZXL_Xia = GenerateTZXL_Xia(BIVector);
+	vector<TZXLFXing*> TZXL_Xia_Vector = Generate_TZXL_Xia_FX_Vector(TZXL_Xia);
+	vector<TZXLFXing*> TZXL_BH_Xia_Vector = Generate_TZXL_BH_FX_Vector(TZXL_Xia, TZXLFXing::DING);
+	TZXL_BH_Xia_Vector = RemoveDuplicated(TZXL_BH_Xia_Vector,TZXL_Xia_Vector);
+
+
+	vector<TZXLFXing*> Vector1 = Ordered_TZXL_FX(TZXL_Shang_Vector, TZXL_BH_Shang_Vector);
+	vector<TZXLFXing*> Vector2 = Ordered_TZXL_FX(TZXL_Xia_Vector, TZXL_BH_Xia_Vector);
+	vector<TZXLFXing*> Ordered_TZXL_Vector = Ordered_TZXL_FX(Vector1, Vector2);
+	Ordered_TZXL_Vector = Add_First_TZXL_FX(Ordered_TZXL_Vector, BIVector);
+	EXPECT_EQ(Ordered_TZXL_Vector.size(), 6);
+}

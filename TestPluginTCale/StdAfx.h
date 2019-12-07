@@ -67,6 +67,17 @@ public:
 	TZXLFXingType Type;
 };
 
+class SearchDuan {
+public:
+	enum DuanDirection {Shang,Xia};
+	//vector<BI*>* TeZhengXL;
+	//vector<BI*>* ZhuXL;
+	BI* Start;
+	BI* End;
+	DuanDirection Type;
+	bool Valid;
+};
+
 struct FXSearchResult {
 	FXing* FirstFX;
 	FXing* SecondFX;
